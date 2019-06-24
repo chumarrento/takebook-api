@@ -1,0 +1,7 @@
+openapi: 3.0.0
+info:
+  title: 'Takebook API'
+  contact:
+    email: support@example.com
+  version: 1.0.0
+paths:

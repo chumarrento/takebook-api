@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: 'Takebook API'
+  contact:
+    email: support@example.com
+  version: 1.0.0
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: 'Autenticação de usuário'
+      operationId: AuthLogin
+      parameters:
+        -
+          name: email
+          in: query
+          description: 'E-mail para autenticação'
+          required: true
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Senha para autenticação'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /admin/auth/login:
+    post:
+      tags:
+        - auth
+      summary: 'Autenticação da administração'
+      operationId: AuthAdminLogin
+      parameters:
+        -
+          name: email
+          in: query
+          description: 'E-mail para autenticação'
+          required: true
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Senha para autenticação'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: 'Atualiza o token atual do usuário'
+      operationId: AuthRefresh
+      responses:
+        '200':
+          description: ...
+  /auth/forgot:
+    post:
+      tags:
+        - auth
+      summary: 'Autenticação da administração'
+      operationId: ForgotPassword
+      parameters:
+        -
+          name: email
+          in: query
+          description: 'E-mail do usuário'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /auth/checkToken:
+    post:
+      tags:
+        - auth
+      summary: 'Verificação do token'
+      operationId: CheckToken
+      parameters:
+        -
+          name: email
+          in: query
+          description: 'E-mail do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: token
+          in: query
+          description: 'Token enviado no email do usuário'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  /auth/reset:
+    post:
+      tags:
+        - auth
+      summary: 'Reset na senha do usuário'
+      operationId: ResetPassword
+      parameters:
+        -
+          name: token
+          in: query
+          description: 'Token enviado no email do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: email
+          in: query
+          description: 'E-mail do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Nova senha do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: password_confirmation
+          in: query
+          description: 'Confirmação da nova senha'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+components:
+  securitySchemes:
+    apiToken:
+      type: apiKey
+      description: 'Token do client para consumo da API'
+      name: Authorization
+      in: header
+      scheme: bearer
