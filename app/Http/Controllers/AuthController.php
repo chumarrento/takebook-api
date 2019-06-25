@@ -25,7 +25,7 @@ class AuthController extends Controller
             'forgot',
             'checkToken',
             'reset'
-            ]
+        ]
         ]);
     }
 
@@ -65,23 +65,23 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
         $user = User::where([
-            ['email',$request->input('email')],
-            ['is_admin',0]
+            ['email', $request->input('email')],
+            ['is_admin', 0]
         ])->first();
 
-        if(! $user ){
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 401);
         }
 
-        if(! Hash::check($request->input('password'),$user->password) ){
+        if (!Hash::check($request->input('password'), $user->password)) {
             return response()->json(['error' => 'Incorrect Password'], 401);
         }
 
-        if (! $token = JWTAuth::attempt($credentials) ) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        AccessLog::create(['user_id' => Auth::user()->id,"ip" => $request->ip(), "type" => "login"]);
+        AccessLog::create(['user_id' => Auth::user()->id, "ip" => $request->ip(), "type" => "login"]);
         return response()->json([
             'status' => 'success',
             'token' => $token
@@ -123,28 +123,29 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
         $user = User::where([
-            ['email',$request->input('email')],
-            ['is_admin',1]
+            ['email', $request->input('email')],
+            ['is_admin', 1]
         ])->first();
 
-        if(! $user ){
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 401);
         }
 
-        if(! Hash::check($request->input('password'),$user->password) ){
+        if (!Hash::check($request->input('password'), $user->password)) {
             return response()->json(['error' => 'Incorrect Password'], 401);
         }
 
-        if (! $token = JWTAuth::attempt($credentials) ) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
-        AccessLog::create(['user_id' => Auth::user()->id,"ip" => $request->ip(), "type" => "login"]);
+
+        AccessLog::create(['user_id' => Auth::user()->id, "ip" => $request->ip(), "type" => "login"]);
         return response()->json([
             'status' => 'success',
             'token' => $token
         ]);
     }
+
     /**
      * @OA\Post(
      *     path="/auth/refresh",
@@ -162,8 +163,8 @@ class AuthController extends Controller
     {
         $token = JWTAuth::getToken();
         $new = JWTAuth::refresh($token);
-        
-        AccessLog::create(['user_id' => Auth::user()->id,"ip" => $request->ip(), "type" => "refresh"]);
+
+        AccessLog::create(['user_id' => Auth::user()->id, "ip" => $request->ip(), "type" => "refresh"]);
         return response()->json([
             'token' => $new
         ]);
@@ -172,7 +173,7 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/auth/forgot",
-     *     summary="Autenticação da administração",
+     *     summary="Solicitação para alteração de senha",
      *     operationId="ForgotPassword",
      *     tags={"auth"},
      *     @OA\Parameter(
@@ -246,16 +247,16 @@ class AuthController extends Controller
             ['used', '=', 0]
         ])->first();
 
-        if($token){
+        if ($token) {
             return $this->success();
         }
-        return $this->unprocessable();
+        return $this->unprocessable(['error' => 'This token already used or not exists.']);
     }
 
     /**
      * @OA\Post(
      *     path="/auth/reset",
-     *     summary="Reset na senha do usuário",
+     *     summary="Alteração de senha do usuário",
      *     operationId="ResetPassword",
      *     tags={"auth"},
      *     @OA\Parameter(
@@ -310,12 +311,12 @@ class AuthController extends Controller
         ]);
 
         $checkToken = DB::table('password_resets')->where([
-                ['email', $request->input('email')],
-                ['token', $request->input('token')],
-                ['used' , '=', 0]
-            ])->first();
+            ['email', $request->input('email')],
+            ['token', $request->input('token')],
+            ['used', '=', 0]
+        ])->first();
 
-        if(!$checkToken){
+        if (!$checkToken) {
             return $this->unprocessable(['This token doest exists or is already used.']);
         }
 

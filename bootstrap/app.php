@@ -86,6 +86,8 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(LumenVendorPublish\LumenVendorPublishServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +95,14 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 |--------------------------------------------------------------------------
 */
 
+//CORS
 $app->configure('cors');
+
+//Mailable
+$app->configure('mail');
+$app->alias('mailer', Illuminate\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 
 /*
 |--------------------------------------------------------------------------
