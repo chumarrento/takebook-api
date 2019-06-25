@@ -25,7 +25,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'address_street',
@@ -66,8 +67,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return string
      */
-    public function generateResetToken(){
-        $token = rand(100000,999999);
+    public function generateResetToken()
+    {
+        $token = rand(100000, 999999);
         DB::table('password_resets')->insert(
             [
                 'email' => $this->email,
@@ -79,7 +81,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $token;
     }
 
-    public function logs(){
+    public function logs()
+    {
         return $this->hasMany(AccessLog::class);
     }
 }

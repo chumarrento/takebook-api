@@ -141,6 +141,374 @@ paths:
       responses:
         '200':
           description: ...
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: 'Retorna o usuário logado'
+      operationId: GetAuthUser
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+    put:
+      tags:
+        - users
+      summary: 'Atualiza o usuário'
+      operationId: UpdateAuthUser
+      parameters:
+        -
+          name: first_name
+          in: query
+          description: 'Primeiro nome'
+          required: false
+          schema:
+            type: string
+        -
+          name: last_name
+          in: query
+          description: 'Ultimo nome'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_street
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_number
+          in: query
+          description: 'Numero da casa do rapaz'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_neighborhood
+          in: query
+          description: 'Bairro onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_city
+          in: query
+          description: 'Cidade onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_state
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_zip_code
+          in: query
+          description: 'CEP do cidadão'
+          required: false
+          schema:
+            type: string
+        -
+          name: email
+          in: query
+          description: 'E-mail do cidadão'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /users/me/change:
+    put:
+      tags:
+        - users
+      summary: 'Atualiza a senha do usuário'
+      operationId: UpdateAuthUserPassword
+      parameters:
+        -
+          name: old_password
+          in: query
+          description: 'Senha antiga do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Nova senha do usuário'
+          required: true
+          schema:
+            type: string
+        -
+          name: password_confirmation
+          in: query
+          description: 'Confirmação da senha'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /users:
+    get:
+      tags:
+        - users
+      summary: 'Lista todas os usuários'
+      operationId: GetUsers
+      parameters:
+        -
+          name: includes
+          in: query
+          description: 'Faz o include das relações '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        -
+          name: first_name
+          in: query
+          description: 'Nome do usuário'
+          required: false
+          schema:
+            type: string
+        -
+          name: last_name
+          in: query
+          description: 'Sobrenome do usuário'
+          required: false
+          schema:
+            type: string
+        -
+          name: is_admin
+          in: query
+          description: 'Status de Administrador'
+          required: false
+          schema:
+            type: number
+            enum:
+              - 0
+              - 1
+      responses:
+        '200':
+          description: ...
+    post:
+      tags:
+        - users
+      summary: 'Cria um novo usuário'
+      operationId: StoreUser
+      parameters:
+        -
+          name: first_name
+          in: query
+          description: 'Primeiro nome'
+          required: true
+          schema:
+            type: string
+        -
+          name: last_name
+          in: query
+          description: 'Ultimo nome'
+          required: true
+          schema:
+            type: string
+        -
+          name: address_street
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_number
+          in: query
+          description: 'Numero da casa do rapaz'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_city
+          in: query
+          description: 'Cidade onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_state
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_zip_code
+          in: query
+          description: 'CEP onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: email
+          in: query
+          description: 'E-mail do cidadão'
+          required: true
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Senha do cidadão'
+          required: true
+          schema:
+            type: string
+        -
+          name: is_admin
+          in: query
+          description: 'Status de Administrador'
+          required: true
+          schema:
+            type: number
+            enum:
+              - 0
+              - 1
+      responses:
+        '200':
+          description: ...
+  '/users/{id}':
+    get:
+      tags:
+        - users
+      summary: 'Lista um usuário'
+      operationId: GetUser
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Id do usuário'
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ...
+    put:
+      tags:
+        - users
+      summary: 'Atualiza um usuário'
+      operationId: UpdateUser
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do usuário'
+          required: true
+          schema:
+            type: integer
+        -
+          name: first_name
+          in: query
+          description: 'Primeiro nome'
+          required: false
+          schema:
+            type: string
+        -
+          name: last_name
+          in: query
+          description: 'Ultimo nome'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_street
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_number
+          in: query
+          description: 'Numero da casa do rapaz'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_city
+          in: query
+          description: 'Cidade onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_state
+          in: query
+          description: 'Rua onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: address_zip_code
+          in: query
+          description: 'CEP onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: email
+          in: query
+          description: 'E-mail do cidadão'
+          required: false
+          schema:
+            type: string
+        -
+          name: password
+          in: query
+          description: 'Senha do cidadão'
+          required: false
+          schema:
+            type: string
+        -
+          name: is_admin
+          in: query
+          description: 'Status de Administrador'
+          required: false
+          schema:
+            type: number
+            enum:
+              - 0
+              - 1
+      responses:
+        '200':
+          description: ...
+    delete:
+      tags:
+        - users
+      summary: 'Apaga um usuário'
+      operationId: DeleteUser
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Id do usuário'
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ...
 components:
   securitySchemes:
     apiToken:

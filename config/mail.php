@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'noreply@lab123.com.br'),
-        'name' => env('MAIL_FROM_NAME', 'Lab123'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply@takebook.com.br'),
+        'name' => env('MAIL_FROM_NAME', 'Takebook'),
     ],
 
     /*
@@ -116,7 +116,7 @@ return [
         'theme' => 'default',
 
         'paths' => [
-            resource_path('views/vendor/mail'),
+            resource_path('views/mails/mail'),
         ],
     ],
 
