@@ -66,7 +66,7 @@ paths:
     post:
       tags:
         - auth
-      summary: 'Autenticação da administração'
+      summary: 'Solicitação para alteração de senha'
       operationId: ForgotPassword
       parameters:
         -
@@ -107,7 +107,7 @@ paths:
     post:
       tags:
         - auth
-      summary: 'Reset na senha do usuário'
+      summary: 'Alteração de senha do usuário'
       operationId: ResetPassword
       parameters:
         -
@@ -141,6 +141,345 @@ paths:
       responses:
         '200':
           description: ...
+  /books:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros'
+      operationId: GetBooks
+      parameters:
+        -
+          name: title
+          in: query
+          description: 'Nome do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: author
+          in: query
+          description: 'Autor do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: user_id
+          in: query
+          description: 'ID do anunciante'
+          required: false
+          schema:
+            type: string
+        -
+          name: includes
+          in: query
+          description: 'Faz o include das relações '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ...
+    post:
+      tags:
+        - books
+      summary: 'Cria um novo livro'
+      operationId: PostBooks
+      parameters:
+        -
+          name: title
+          in: query
+          description: 'Nome do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: author
+          in: query
+          description: 'Autor do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: description
+          in: query
+          description: 'Descrição do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: price
+          in: query
+          description: 'Preço do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: categories
+          in: query
+          description: 'IDs das categorias'
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/books/{id}':
+    get:
+      tags:
+        - books
+      summary: 'Lista um livro'
+      operationId: GetBook
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+    put:
+      tags:
+        - books
+      summary: 'Atualiza um livro'
+      operationId: PutBooks
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+        -
+          name: title
+          in: query
+          description: 'Nome do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: author
+          in: query
+          description: 'Autor do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: description
+          in: query
+          description: 'Descrição do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: price
+          in: query
+          description: 'Preço do livro'
+          required: false
+          schema:
+            type: string
+        -
+          name: categories
+          in: query
+          description: 'IDs das categorias'
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: ...
+    delete:
+      tags:
+        - books
+      summary: 'Apaga um livro'
+      operationId: DeleteBook
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: 'Lista todas as categorias'
+      operationId: GetCategories
+      parameters:
+        -
+          name: name
+          in: query
+          description: 'Nome da categoria'
+          required: false
+          schema:
+            type: string
+        -
+          name: includes
+          in: query
+          description: 'Faz o include das relações '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ...
+    post:
+      tags:
+        - categories
+      summary: 'Cria uma nova categoria'
+      operationId: PostCategories
+      parameters:
+        -
+          name: name
+          in: query
+          description: 'Nome da categoria'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+  '/categories/{id}':
+    get:
+      tags:
+        - categories
+      summary: 'Lista uma categoria'
+      operationId: GetCategory
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID da categoria'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+    put:
+      tags:
+        - categories
+      summary: 'Atualiza uma categoria'
+      operationId: PutCategories
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID da categoria'
+          required: true
+          schema:
+            type: integer
+        -
+          name: name
+          in: query
+          description: 'Nome da categoria'
+          required: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ...
+    delete:
+      tags:
+        - categories
+      summary: 'Apaga uma categoria'
+      operationId: DeleteCategory
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID da categoria'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+  /rooms:
+    get:
+      tags:
+        - chat
+      summary: 'Lista todos os chats do usuário autenticado'
+      operationId: GetRooms
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/rooms/{room_id}/messages':
+    get:
+      tags:
+        - chat
+      summary: 'Lista todas as mensagens de um chat'
+      operationId: GetMessages
+      parameters:
+        -
+          name: room_id
+          in: path
+          description: 'ID do chat'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+  '/rooms/{advertiser_id}/w/{buyer_id}':
+    post:
+      tags:
+        - chat
+      summary: 'Cria uma mensagem em um chat'
+      operationId: PostMessage
+      parameters:
+        -
+          name: advertiser_id
+          in: path
+          description: 'ID do anunciante'
+          required: true
+          schema:
+            type: integer
+        -
+          name: buyer_id
+          in: path
+          description: 'ID do comprador'
+          required: true
+          schema:
+            type: integer
+        -
+          name: message
+          in: query
+          description: Mensagem
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users/me:
     get:
       tags:
@@ -262,6 +601,38 @@ paths:
       security:
         -
           apiToken: []
+  /users/me/likes:
+    get:
+      tags:
+        - users
+      summary: 'Retorna todos os livros likados do usuário logado'
+      operationId: UserLikedBooks
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/users/me/likes/{book_id}':
+    post:
+      tags:
+        - users
+      summary: 'Dá um like em um livro para o usuário logado'
+      operationId: UserLikeBook
+      parameters:
+        -
+          name: book_id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users:
     get:
       tags:
@@ -305,6 +676,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - users
@@ -404,6 +778,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     put:
       tags:
         - users
@@ -493,6 +870,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     delete:
       tags:
         - users
@@ -509,6 +889,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
 components:
   securitySchemes:
     apiToken:

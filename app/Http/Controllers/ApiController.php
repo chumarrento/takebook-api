@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
-use App\FieldManager\FieldManager;
+use App\FieldManagers\FieldManager;
 
 class ApiController extends Controller
 {
@@ -50,10 +50,10 @@ class ApiController extends Controller
 
             if ($request->has($filter['field'])) {
                 $value = $request->input($filter['field']);
-                if($filter['type'] == "LIKE"){
-                    $value  = "%" . $value . "%";
+                if ($filter['type'] == "LIKE") {
+                    $value = "%" . $value . "%";
                 }
-                $query = $query->where($filter['field'], $filter['type'] , $value);
+                $query = $query->where($filter['field'], $filter['type'], $value);
             }
         }
 
@@ -74,7 +74,7 @@ class ApiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -88,7 +88,7 @@ class ApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
@@ -109,8 +109,8 @@ class ApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
@@ -127,7 +127,7 @@ class ApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)

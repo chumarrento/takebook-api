@@ -3,6 +3,9 @@
 namespace App\Entities\Auth;
 
 use App\Entities\AccessLog;
+use App\Entities\Book\Book;
+use App\Entities\Chat\Message;
+use App\Entities\Chat\Room;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,6 +50,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    protected $appends = ['likes'];
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -84,5 +89,42 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function logs()
     {
         return $this->hasMany(AccessLog::class);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'user_id', 'id');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Book::class,
+            'user_like_books',
+            'user_id',
+            'book_id')->withTimestamps();
+    }
+
+    public function getLikesAttribute()
+    {
+        $book_ids = $this->likes()->get();
+        $data = [];
+        foreach ($book_ids as $book_id) {
+            array_push($data, Book::find($book_id));
+        }
+
+        return $data;
+    }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(User::class,
+            Room::class,
+            'advertiser_id',
+            'buyer_id')->withTimestamps();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id', 'id');
     }
 }

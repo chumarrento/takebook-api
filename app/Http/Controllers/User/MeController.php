@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 
 use App\Entities\Auth\User;
+use App\Entities\Book\Book;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,8 @@ class MeController extends Controller
      *     ),
      *  )
      */
-    public function me(){
+    public function me()
+    {
         return $this->success(Auth::user());
     }
 
@@ -131,7 +133,8 @@ class MeController extends Controller
      *     ),
      *  )
      */
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $this->validate($request, [
             'first_name' => 'string',
             'last_name' => 'string',
@@ -190,7 +193,7 @@ class MeController extends Controller
             'password' => 'required|string|confirmed'
         ]);
 
-        if(! Hash::check($request->input('old_password'), Auth::user()->password)){
+        if (!Hash::check($request->input('old_password'), Auth::user()->password)) {
             return $this->unauthorized(['error' => 'Incorrect Password']);
         }
         $password = [
@@ -199,5 +202,63 @@ class MeController extends Controller
         Auth::user()->update($password);
 
         return $this->success(['res' => 'Your password has been changed.']);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/users/me/likes",
+     *     summary="Retorna todos os livros likados do usuário logado",
+     *     operationId="UserLikedBooks",
+     *     tags={"users"},
+     *     security={{"apiToken":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     ),
+     *  )
+     */
+    public function getLikedBooks()
+    {
+        $data = User::find(Auth::user()->getAuthIdentifier())->books()->get();
+
+        return $this->success($data);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/users/me/likes/{book_id}",
+     *     summary="Dá um like em um livro para o usuário logado",
+     *     operationId="UserLikeBook",
+     *     tags={"users"},
+     *     security={{"apiToken":{}}},
+     *     @OA\Parameter(
+     *         name="book_id",
+     *         in="path",
+     *         description="ID do livro",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     ),
+     *  )
+     */
+    public function likeBook(Request $request, int $book_id)
+    {
+        $data = Book::findOrFail($book_id);
+
+        $verify = Auth::user()->likes()->where('book_id', '=', $book_id)->first();
+
+        if ($verify) {
+            $data->likes()->detach(Auth::user()->getAuthIdentifier());
+            return $this->success($data);
+        }
+
+        $data->likes()->attach(Auth::user()->getAuthIdentifier());
+
+        return $this->success($data);
     }
 }

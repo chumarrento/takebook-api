@@ -50,8 +50,7 @@ class UserFieldManager extends FieldManager
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
-            'is_admin' => 'boolean'
+            'password' => 'required'
         ];
 
         return $this->rules($fields);
