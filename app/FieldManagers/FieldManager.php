@@ -246,7 +246,7 @@ abstract class FieldManager
         ];
     }
 
-    public function simpleFilters()
+    public function filters()
     {
         return [];
     }

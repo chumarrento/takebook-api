@@ -43,20 +43,20 @@ class BookFieldManager extends FieldManager
         return $this->rules($fields);
     }
 
-    public function simpleFilters()
+    public function filters()
     {
         return [
             [
                 'field' => 'title',
-                'type' => 'LIKE'
+                'type' => 'like'
             ],
             [
                 'field' => 'author',
-                'type' => 'LIKE'
+                'type' => 'like'
             ],
             [
                 'field' => 'user_id',
-                'type' => '='
+                'type' => 'equals'
             ]
         ];
     }

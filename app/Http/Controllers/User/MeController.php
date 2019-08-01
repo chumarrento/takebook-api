@@ -5,18 +5,23 @@ namespace App\Http\Controllers\User;
 
 use App\Entities\Auth\User;
 use App\Entities\Book\Book;
-use App\Http\Controllers\Controller;
+use App\FieldManagers\User\UserFieldManager;
+use App\Http\Controllers\ApiController;
+use App\Repositories\User\UserRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class MeController extends Controller
+class MeController extends ApiController
 {
     use ApiResponse;
 
-    public function __construct()
+    public function __construct(UserRepository $repository, UserFieldManager $fieldManager)
     {
+        $this->model = Auth::user();
+        $this->fieldManager = $fieldManager;
+        $this->repository = $repository;
         $this->middleware('auth:api');
     }
 
@@ -35,7 +40,7 @@ class MeController extends Controller
      */
     public function me()
     {
-        return $this->success(Auth::user());
+        return $this->success($this->model);
     }
 
     /**
@@ -133,7 +138,7 @@ class MeController extends Controller
      *     ),
      *  )
      */
-    public function update(Request $request)
+    public function putMe(Request $request)
     {
         $this->validate($request, [
             'first_name' => 'string',
@@ -141,9 +146,7 @@ class MeController extends Controller
             'email' => 'email',
         ]);
 
-        User::find(Auth::user()->id)->update($request->all());
-
-        return $this->success(User::find(Auth::user()->id));
+        return parent::update($request, $this->model->getAuthIdentifier());
     }
 
     /**

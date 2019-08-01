@@ -23,12 +23,12 @@ class CategoryFieldManager extends FieldManager
         return $this->rules($fields);
     }
 
-    public function simpleFilters()
+    public function filters()
     {
         return [
             [
                 'field' => 'name',
-                'type' => 'LIKE'
+                'type' => 'like'
             ]
         ];
     }

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Repository;
+use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 use App\FieldManagers\FieldManager;
 
-class ApiController extends Controller
+class ApiController extends BaseController
 {
     use ApiResponse;
 
@@ -17,10 +19,14 @@ class ApiController extends Controller
     protected $model;
 
     /**
+     * @var Repository
+     */
+    protected $repository;
+
+    /**
      * @var Model
      */
     protected $query;
-
 
     /**
      * @var FieldManager
@@ -44,16 +50,26 @@ class ApiController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $this->query ?: $this->model;
+        $query = $this->query ?: $this->repository->getModel();
 
-        foreach ($this->fieldManager->simpleFilters() as $filter) {
+        foreach ($this->fieldManager->filters() as $filter) {
 
-            if ($request->has($filter['field'])) {
-                $value = $request->input($filter['field']);
-                if ($filter['type'] == "LIKE") {
-                    $value = "%" . $value . "%";
-                }
-                $query = $query->where($filter['field'], $filter['type'], $value);
+            if (!$request->has($filter['field'])) {
+                continue;
+            }
+
+            if ($filter['type'] == 'equals') {
+                $query = $query->where($filter['field'], $request->get($filter['field']));
+                continue;
+            }
+
+            if ($filter['type'] == 'like') {
+                $text = str_replace(' ', '%', $request->get($filter['field']));
+                $this->query = $this->query->whereRaw(
+                    $filter['field'] . ' like "%' . $text . '%"'
+                );
+
+                continue;
             }
         }
 
@@ -65,7 +81,7 @@ class ApiController extends Controller
         if ($this->list || $request->get('search_type') == 'list') {
             $resources = $query->get();
         } else {
-            $resources = $query->paginate($this->limit);
+            $resources = $query->paginate($request->get('per_page', $this->limit));
         }
 
         return $this->success($resources);
@@ -74,34 +90,34 @@ class ApiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $this->validate($request, $this->fieldManager->store());
-        $resource = $this->model->create($request->all());
+        $resource = $this->repository->create($request->all());
         return response()->json($resource);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int | string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(Request $request, $id)
     {
-        $resource = $this->model->find($id);
+        $resource = $this->repository->find($id);
         if (!$resource) {
             return $this->notFound();
         }
 
-//        if ($includes = $request->get('includes')) {
-//            $includes = is_array($includes) ? $includes : explode(',', $includes);
-//            $resource->load($includes);
-//        }
+        if ($includes = $request->get('includes')) {
+            $includes = is_array($includes) ? $includes : explode(',', $includes);
+            $resource->load($includes);
+        }
 
         return $this->success($resource);
     }
@@ -109,33 +125,32 @@ class ApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
-        if (!$resource = $this->model->find($id)) {
-            return $this->notFound();
+        $this->validate($request, $this->fieldManager->update());
+        $resource = $this->repository->update($request->all(), $id);
+
+        if ($includes = $request->get('includes')) {
+            $includes = is_array($includes) ? $includes : explode(',', $includes);
+            $resource->load($includes);
         }
 
-        $this->validate($request, $this->fieldManager->update());
-        $resource->update($request->all());
         return $this->success($resource);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
     {
-        if (!$resource = $this->model->find($id)) {
-            return $this->notFound();
-        }
-        $resource->delete();
+        $this->repository->delete($id);
         return $this->success();
     }
 }

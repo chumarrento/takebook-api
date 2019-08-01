@@ -23,15 +23,15 @@ $router->post('auth/checkToken', 'AuthController@checkToken');
 $router->post('auth/reset', 'AuthController@reset');
 
 $router->get('users/me', 'User\\MeController@me');
-$router->put('users/me', 'User\\MeController@update');
+$router->put('users/me', 'User\\MeController@putMe');
 $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{book_id}', 'User\\MeController@likeBook');
 
 $router->get('users', 'User\\UserController@index');
 $router->post('users', 'User\\UserController@store');
-$router->get('users/{id}', 'User\\UserController@show');
-$router->put('users/{id}', 'User\\UserController@update');
+$router->get('users/{id}', 'User\\UserController@getUser');
+$router->put('users/{id}', 'User\\UserController@putUser');
 $router->delete('users/{id}', 'User\\UserController@destroy');
 
 $router->get('categories', 'Category\\CategoryController@index');
