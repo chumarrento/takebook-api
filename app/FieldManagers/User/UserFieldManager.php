@@ -50,24 +50,23 @@ class UserFieldManager extends FieldManager
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
-            'is_admin' => 'boolean'
+            'password' => 'required'
         ];
 
         return $this->rules($fields);
     }
 
-    public function simpleFilters()
+    public function filters()
     {
         return [
             [
                 'field' => 'name',
-                'type' => 'LIKE'
+                'type' => 'like'
 
             ],
             [
                 'field' => 'is_admin',
-                'type' => '='
+                'type' => 'equals'
             ]
         ];
     }
