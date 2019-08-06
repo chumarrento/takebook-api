@@ -28,23 +28,23 @@ $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{book_id}', 'User\\MeController@likeBook');
 
-$router->get('users', 'User\\UserController@index');
-$router->post('users', 'User\\UserController@store');
+$router->get('users', 'User\\UserController@getUsers');
+$router->post('users', 'User\\UserController@postUser');
 $router->get('users/{id}', 'User\\UserController@getUser');
 $router->put('users/{id}', 'User\\UserController@putUser');
 $router->delete('users/{id}', 'User\\UserController@destroy');
 
-$router->get('categories', 'Category\\CategoryController@index');
-$router->post('categories', 'Category\\CategoryController@store');
-$router->get('categories/{id}', 'Category\\CategoryController@show');
-$router->put('categories/{id}', 'Category\\CategoryController@update');
-$router->delete('categories/{id}', 'Category\\CategoryController@destroy');
+$router->get('categories', 'Category\\CategoryController@getCategories');
+$router->post('categories', 'Category\\CategoryController@postCategory');
+$router->get('categories/{id}', 'Category\\CategoryController@getCategory');
+$router->put('categories/{id}', 'Category\\CategoryController@putCategory');
+$router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory');
 
-$router->get('books', 'Book\\BookController@index');
-$router->post('books', 'Book\\BookController@store');
-$router->get('books/{id}', 'Book\\BookController@show');
-$router->put('books/{id}', 'Book\\BookController@update');
-$router->delete('books/{id}', 'Book\\BookController@destroy');
+$router->get('books', 'Book\\BookController@getBooks');
+$router->post('books', 'Book\\BookController@postBook');
+$router->get('books/{id}', 'Book\\BookController@getBook');
+$router->put('books/{id}', 'Book\\BookController@putBook');
+$router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
 $router->get('rooms', 'Chat\\ChatController@getRooms');
 $router->get('rooms/{room_id}/messages', 'Chat\\ChatController@getMessages');

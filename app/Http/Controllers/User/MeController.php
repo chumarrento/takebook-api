@@ -222,7 +222,7 @@ class MeController extends ApiController
      */
     public function getLikedBooks()
     {
-        $data = User::find(Auth::user()->getAuthIdentifier())->books()->get();
+        $data = $this->model->likes()->get();
 
         return $this->success($data);
     }

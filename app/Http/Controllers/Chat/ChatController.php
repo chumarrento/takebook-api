@@ -103,9 +103,9 @@ class ChatController extends Controller
      *     ),
      *  )
      */
-    public function storeMessage(Request $request, int $advertiser_id, int $buyer_id)
+    public function storeMessage(Request $request, int $advertiserId, int $buyerId)
     {
-        $request->merge(['advertiser_id' => $advertiser_id, 'buyer_id' => $buyer_id]);
+        $request->merge(['advertiser_id' => $advertiserId, 'buyer_id' => $buyerId]);
         $this->validate($request, [
             'advertiser_id' => 'required|exists:users,id',
             'buyer_id' => 'required|exists:users,id',
@@ -113,16 +113,16 @@ class ChatController extends Controller
         ]);
 
         $room = Room::where([
-            ['buyer_id', '=', $buyer_id],
-            ['advertiser_id', '=', $advertiser_id]
+            ['buyer_id', '=', $buyerId],
+            ['advertiser_id', '=', $advertiserId]
         ])->first();
 
         if (!$room) {
-            User::find($advertiser_id)->rooms()->attach($buyer_id);
+            User::find($advertiserId)->rooms()->attach($buyerId);
 
             $room = Room::where([
-                ['buyer_id', '=', $buyer_id],
-                ['advertiser_id', '=', $advertiser_id]
+                ['buyer_id', '=', $buyerId],
+                ['advertiser_id', '=', $advertiserId]
             ])->first();
         }
 
