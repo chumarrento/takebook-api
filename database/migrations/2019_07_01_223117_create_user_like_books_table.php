@@ -15,9 +15,12 @@ class CreateUserLikeBooksTable extends Migration
     {
         Schema::create('user_like_books', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->references('id')->on('users');
-            $table->bigInteger('book_id')->references('id')->on('books');
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('book_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('book_id')->references('id')->on('books');
         });
     }
 
