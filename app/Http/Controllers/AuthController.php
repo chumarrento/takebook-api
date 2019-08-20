@@ -70,19 +70,19 @@ class AuthController extends Controller
         ])->first();
 
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 401);
+            return $this->unauthorized(['error' => 'User not found']);
         }
 
         if (!Hash::check($request->input('password'), $user->password)) {
-            return response()->json(['error' => 'Incorrect Password'], 401);
+            return $this->unauthorized(['error' => 'Incorrect Password']);
         }
 
         if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return $this->unauthorized(['error' => 'Unauthorized']);
         }
 
         AccessLog::create(['user_id' => Auth::user()->getAuthIdentifier(), "ip" => $request->ip(), "type" => "login"]);
-        return response()->json([
+        return $this->success([
             'status' => 'success',
             'token' => $token,
             'user' => $user
@@ -129,22 +129,22 @@ class AuthController extends Controller
         ])->first();
 
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 401);
+            return $this->unauthorized(['error' => 'User not found']);
         }
 
         if (!Hash::check($request->input('password'), $user->password)) {
-            return response()->json(['error' => 'Incorrect Password'], 401);
+            return $this->unauthorized(['error' => 'Incorrect Password']);
         }
 
         if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return $this->unauthorized(['error' => 'Unauthorized']);
         }
 
         AccessLog::create(
             ['user_id' => Auth::user()->getAuthIdentifier(), "ip" => $request->ip(), "type" => "login"]
         );
 
-        return response()->json([
+        return $this->success([
             'status' => 'success',
             'token' => $token,
             'user' => $user
@@ -170,7 +170,7 @@ class AuthController extends Controller
         $new = JWTAuth::refresh($token);
 
         AccessLog::create(['user_id' => Auth::user()->getAuthIdentifier(), "ip" => $request->ip(), "type" => "refresh"]);
-        return response()->json([
+        return $this->success([
             'token' => $new
         ]);
     }
@@ -246,6 +246,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'token' => 'required'
         ]);
+        
         $token = DB::table('password_resets')->where([
             ['email', '=', $request->input('email')],
             ['token', '=', $request->input('token')],
@@ -318,7 +319,7 @@ class AuthController extends Controller
         $checkToken = DB::table('password_resets')->where([
             ['email', $request->input('email')],
             ['token', $request->input('token')],
-            ['used', '=', 0]
+            ['used', 0]
         ])->first();
 
         if (!$checkToken) {

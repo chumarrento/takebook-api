@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Entities\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UsersSeeder extends Seeder
 {
@@ -29,11 +30,12 @@ class UsersSeeder extends Seeder
                 'is_admin' => true
             ]
         ];
-
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         User::truncate();
 
         foreach ($data as $login) {
             User::create($login);
         }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
