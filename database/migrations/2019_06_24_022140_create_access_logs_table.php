@@ -15,10 +15,12 @@ class CreateAccessLogsTable extends Migration
     {
         Schema::create('access_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->references('id')->on('users');
+            $table->bigInteger('user_id')->unsigned();
             $table->ipAddress('ip')->nullable();
             $table->string('type');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

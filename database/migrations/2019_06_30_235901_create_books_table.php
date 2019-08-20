@@ -19,8 +19,11 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->bigInteger('user_id')->references('id')->on('users');
+            $table->boolean('status')->default(false);
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

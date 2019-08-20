@@ -15,9 +15,12 @@ class CreateBookCategoriesTable extends Migration
     {
         Schema::create('book_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('book_id')->references('id')->on('books');
-            $table->bigInteger('category_id')->references('id')->on('categories');
+            $table->bigInteger('book_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

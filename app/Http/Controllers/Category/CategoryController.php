@@ -21,8 +21,8 @@ class CategoryController extends ApiController
         $this->fieldManager = $fieldManager;
         $this->model = $model;
         $this->repository = $repository;
-//        $this->middleware('auth:api');
-        $this->middleware( 'admin', ['except' => ['getCategories']]);
+       $this->middleware('auth:api');
+        $this->middleware( 'admin', ['except' => ['getCategories', 'getCategory']]);
     }
 
     /**
@@ -31,6 +31,7 @@ class CategoryController extends ApiController
      *     summary="Lista todas as categorias",
      *     operationId="GetCategories",
      *     tags={"categories"},
+     *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
@@ -67,6 +68,7 @@ class CategoryController extends ApiController
      *     summary="Cria uma nova categoria",
      *     operationId="PostCategories",
      *     tags={"categories"},
+     *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
@@ -93,6 +95,7 @@ class CategoryController extends ApiController
      *     summary="Lista uma categoria",
      *     operationId="GetCategory",
      *     tags={"categories"},
+    *      security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -119,6 +122,7 @@ class CategoryController extends ApiController
      *     summary="Atualiza uma categoria",
      *     operationId="PutCategories",
      *     tags={"categories"},
+     *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -154,6 +158,7 @@ class CategoryController extends ApiController
      *     summary="Apaga uma categoria",
      *     operationId="DeleteCategory",
      *     tags={"categories"},
+     *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
