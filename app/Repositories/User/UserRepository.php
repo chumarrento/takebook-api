@@ -18,6 +18,10 @@ class UserRepository extends Repository
 
     public function create(array $data)
     {
+        if (array_key_exists('is_admin', $data)) {
+            unset($data['is_admin']);
+        }
+
         $data['password'] = Hash::make($data['password']);
         return parent::create($data);
     }
@@ -31,7 +35,10 @@ class UserRepository extends Repository
     {
         if (array_key_exists('password', $data)) {
             unset($data['password']);
+        } elseif (array_key_exists('is_admin', $data)) {
+            unset($data['is_admin']);
         }
+        
         return parent::update($data, $id);
     }
 }

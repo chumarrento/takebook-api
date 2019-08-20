@@ -48,6 +48,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
+        'is_admin'
     ];
 
     protected $appends = ['likes'];

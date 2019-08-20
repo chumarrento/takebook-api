@@ -27,8 +27,8 @@ class UserController extends ApiController
         $this->fieldManager = $fieldManager;
         $this->model = $model;
         $this->repository = $repository;
-        $this->middleware('auth:api', ['except' => ['store']]);
-        $this->middleware('admin', ['except' => ['store']]);
+        $this->middleware('auth:api', ['except' => ['postUser']]);
+        $this->middleware('admin', ['except' => ['postUser']]);
     }
 
     /**
@@ -174,16 +174,6 @@ class UserController extends ApiController
      *           type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         name="is_admin",
-     *         in="query",
-     *         description="Status de Administrador",
-     *         required=true,
-     *        @OA\Schema(
-     *           type="number",
-     *           enum={0, 1},
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="...",
@@ -291,16 +281,6 @@ class UserController extends ApiController
      *         required=false,
      *        @OA\Schema(
      *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="is_admin",
-     *         in="query",
-     *         description="Status de Administrador",
-     *         required=false,
-     *        @OA\Schema(
-     *           type="number",
-     *           enum={0, 1},
      *         )
      *     ),
      *     @OA\Response(

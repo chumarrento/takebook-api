@@ -345,6 +345,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - categories
@@ -361,6 +364,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
   '/categories/{id}':
     get:
       tags:
@@ -378,6 +384,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     put:
       tags:
         - categories
@@ -401,6 +410,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     delete:
       tags:
         - categories
@@ -417,6 +429,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
   /rooms:
     get:
       tags:
@@ -748,16 +763,6 @@ paths:
           required: true
           schema:
             type: string
-        -
-          name: is_admin
-          in: query
-          description: 'Status de Administrador'
-          required: true
-          schema:
-            type: number
-            enum:
-              - 0
-              - 1
       responses:
         '200':
           description: ...
@@ -857,16 +862,6 @@ paths:
           required: false
           schema:
             type: string
-        -
-          name: is_admin
-          in: query
-          description: 'Status de Administrador'
-          required: false
-          schema:
-            type: number
-            enum:
-              - 0
-              - 1
       responses:
         '200':
           description: ...

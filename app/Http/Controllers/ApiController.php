@@ -98,7 +98,7 @@ class ApiController extends BaseController
     {
         $this->validate($request, $this->fieldManager->store());
         $resource = $this->repository->create($request->all());
-        return response()->json($resource);
+        return $this->created($resource);
     }
 
     /**
