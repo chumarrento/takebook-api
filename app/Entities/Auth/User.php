@@ -6,6 +6,7 @@ use App\Entities\AccessLog;
 use App\Entities\Book\Book;
 use App\Entities\Chat\Message;
 use App\Entities\Chat\Room;
+use App\Entities\Report\Report;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -127,5 +128,29 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function messages()
     {
         return $this->hasMany(Message::class, 'user_id', 'id');
+    }
+
+    public function reports()
+    {
+        return $this->belongsToMany(
+            User::class,
+            Report::class,
+            'denunciator_id',
+            'reported_id'
+        )
+            ->withPivot(['type_id', 'description'])
+            ->withTimestamps();
+    }
+
+    public function reporteds()
+    {
+        return $this->belongsToMany(
+            User::class,
+            Report::class,
+            'reported_id',
+            'denunciator_id'
+        )
+            ->withPivot(['type_id', 'description'])
+            ->withTimestamps();
     }
 }
