@@ -253,7 +253,7 @@ class MeController extends ApiController
     {
         $data = Book::findOrFail($book_id);
 
-        $verify = Auth::user()->likes()->where('book_id', '=', $book_id)->first();
+        $verify = $this->model->likes()->where('book_id', '=', $book_id)->first();
 
         if ($verify) {
             $data->likes()->detach(Auth::user()->getAuthIdentifier());
@@ -263,5 +263,22 @@ class MeController extends ApiController
         $data->likes()->attach(Auth::user()->getAuthIdentifier());
 
         return $this->success($data);
+    }
+
+    public function report(Request $request, int $reportedId)
+    {
+        $request->merge(['reported_id' => $reportedId]);
+        $this->validate($request, [
+            'reported_id' => 'required|exists:users,id',
+            'type_id' => 'required|exists:report_types,id',
+            'description' => 'string'
+        ]);
+
+        $this->model->reports()->attach($reportedId, [
+            'type_id' => $request->input('type_id'),
+            'description' => $request->input('description')
+        ]);
+
+        return $this->noContent();
     }
 }

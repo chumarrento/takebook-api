@@ -27,6 +27,7 @@ $router->put('users/me', 'User\\MeController@putMe');
 $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{book_id}', 'User\\MeController@likeBook');
+$router->post('users/me/reports/{reportedId}', 'User\\MeController@report');
 
 $router->get('users', 'User\\UserController@getUsers');
 $router->post('users', 'User\\UserController@postUser');

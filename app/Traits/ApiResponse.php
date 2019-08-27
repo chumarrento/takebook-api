@@ -47,6 +47,17 @@ trait ApiResponse
     }
 
     /**
+     * Return HTTP Created (204)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function noContent()
+    {
+        $args = func_get_args();
+        return $this->response($this->getData($args), Responses::HTTP_NO_CONTENT);
+    }
+
+    /**
      * Return HTTP Bad Request (400)
      *
      * @return \Illuminate\Http\JsonResponse
