@@ -229,13 +229,13 @@ class MeController extends ApiController
 
     /**
      * @OA\Post(
-     *     path="/users/me/likes/{book_id}",
+     *     path="/users/me/likes/{bookId}",
      *     summary="Dá um like em um livro para o usuário logado",
      *     operationId="UserLikeBook",
      *     tags={"users"},
      *     security={{"apiToken":{}}},
      *     @OA\Parameter(
-     *         name="book_id",
+     *         name="bookId",
      *         in="path",
      *         description="ID do livro",
      *         required=true,
@@ -249,11 +249,11 @@ class MeController extends ApiController
      *     ),
      *  )
      */
-    public function likeBook(Request $request, int $book_id)
+    public function likeBook(Request $request, int $bookId)
     {
-        $data = Book::findOrFail($book_id);
+        $data = Book::findOrFail($bookId);
 
-        $verify = $this->model->likes()->where('book_id', '=', $book_id)->first();
+        $verify = $this->model->likes()->where('book_id', '=', $bookId)->first();
 
         if ($verify) {
             $data->likes()->detach(Auth::user()->getAuthIdentifier());
@@ -265,6 +265,46 @@ class MeController extends ApiController
         return $this->success($data);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/users/me/reports/{reportedId}",
+     *     summary="Denúncia um usuário",
+     *     operationId="UserReport",
+     *     tags={"users"},
+     *     security={{"apiToken":{}}},
+     *     @OA\Parameter(
+     *         name="reportedId",
+     *         in="path",
+     *         description="ID do usuário que vai ser reportado",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="type_id",
+     *         in="query",
+     *         description="ID do tipo de report",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         description="Descrição da denúncia",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     ),
+     *  )
+     */
     public function report(Request $request, int $reportedId)
     {
         $request->merge(['reported_id' => $reportedId]);

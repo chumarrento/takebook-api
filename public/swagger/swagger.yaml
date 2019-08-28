@@ -461,7 +461,7 @@ paths:
       responses:
         '200':
           description: ...
-  '/rooms/{advertiser_id}/w/{buyer_id}':
+  '/rooms/{advertiserId}/w/{buyerId}':
     post:
       tags:
         - chat
@@ -469,14 +469,14 @@ paths:
       operationId: PostMessage
       parameters:
         -
-          name: advertiser_id
+          name: advertiserId
           in: path
           description: 'ID do anunciante'
           required: true
           schema:
             type: integer
         -
-          name: buyer_id
+          name: buyerId
           in: path
           description: 'ID do comprador'
           required: true
@@ -628,7 +628,7 @@ paths:
       security:
         -
           apiToken: []
-  '/users/me/likes/{book_id}':
+  '/users/me/likes/{bookId}':
     post:
       tags:
         - users
@@ -636,10 +636,44 @@ paths:
       operationId: UserLikeBook
       parameters:
         -
-          name: book_id
+          name: bookId
           in: path
           description: 'ID do livro'
           required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/users/me/reports/{reportedId}':
+    post:
+      tags:
+        - users
+      summary: 'Denúncia um usuário'
+      operationId: UserReport
+      parameters:
+        -
+          name: reportedId
+          in: path
+          description: 'ID do usuário que vai ser reportado'
+          required: true
+          schema:
+            type: integer
+        -
+          name: type_id
+          in: query
+          description: 'ID do tipo de report'
+          required: true
+          schema:
+            type: integer
+        -
+          name: description
+          in: query
+          description: 'Descrição da denúncia'
+          required: false
           schema:
             type: integer
       responses:
