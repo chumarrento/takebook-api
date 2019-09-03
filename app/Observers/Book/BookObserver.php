@@ -6,7 +6,7 @@ namespace App\Observers\Book;
 
 use App\Entities\Auth\User;
 use App\Entities\Book\Book;
-use App\Mail\ResetPasswordMail;
+use App\Mail\NotifyAdminMail;
 use Illuminate\Support\Facades\Mail;
 
 class BookObserver
@@ -15,16 +15,8 @@ class BookObserver
     {
         $users = User::where('is_admin', '=', true)->get();
 
-//        foreach ($users as $user) {
-//            Mail::to($user)->send(new ResetPasswordMail(['user' => $user, 'token' => $book]));
-//        }
+       foreach ($users as $user) {
+           Mail::to($user)->send(new NotifyAdminMail(['user' => $user, 'book' => $book]));
+       }
     }
-
-//    public function updated(Book $book)
-//    {
-//        dd($book);
-//        $user = $book->user()->first();
-//
-//        Mail::to($user)->send(new ResetPasswordMail(['user' => $user, 'token' => $book]));
-//    }
 }

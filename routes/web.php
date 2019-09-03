@@ -26,7 +26,8 @@ $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
 $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
-$router->post('users/me/likes/{book_id}', 'User\\MeController@likeBook');
+$router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
+$router->post('users/me/reports/{reportedId}', 'User\\MeController@report');
 
 $router->get('users', 'User\\UserController@getUsers');
 $router->post('users', 'User\\UserController@postUser');
@@ -47,5 +48,5 @@ $router->put('books/{id}', 'Book\\BookController@putBook');
 $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
 $router->get('rooms', 'Chat\\ChatController@getRooms');
-$router->get('rooms/{room_id}/messages', 'Chat\\ChatController@getMessages');
-$router->post('rooms/{advertiser_id}/w/{buyer_id}', 'Chat\\ChatController@storeMessage');
+$router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
+$router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');

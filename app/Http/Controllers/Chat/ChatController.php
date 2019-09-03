@@ -65,13 +65,13 @@ class ChatController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/rooms/{advertiser_id}/w/{buyer_id}",
+     *     path="/rooms/{advertiserId}/w/{buyerId}",
      *     summary="Cria uma mensagem em um chat",
      *     operationId="PostMessage",
      *     tags={"chat"},
      *     security={{"apiToken":{}}},
      *     @OA\Parameter(
-     *         name="advertiser_id",
+     *         name="advertiserId",
      *         in="path",
      *         description="ID do anunciante",
      *         required=true,
@@ -80,7 +80,7 @@ class ChatController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="buyer_id",
+     *         name="buyerId",
      *         in="path",
      *         description="ID do comprador",
      *         required=true,
