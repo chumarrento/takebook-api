@@ -42,6 +42,7 @@ $router->put('categories/{id}', 'Category\\CategoryController@putCategory');
 $router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory');
 
 $router->get('books', 'Book\\BookController@getBooks');
+$router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
