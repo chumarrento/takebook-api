@@ -105,6 +105,8 @@ class BookController extends ApiController
             }
         }
 
+
+        $data['count'] = count($data);
         return $this->success($data);
     }
 
