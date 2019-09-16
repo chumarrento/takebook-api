@@ -15,6 +15,12 @@ class BookRepository extends Repository
         $this->model = new Book();
     }
 
+    public function findAll()
+    {
+        $data = $this->model->where('status', false)->paginate(15);
+        return $data;
+    }
+
     public function create(array $data)
     {
         unset($data['status']);

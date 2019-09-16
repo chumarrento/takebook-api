@@ -170,6 +170,13 @@ paths:
           schema:
             type: string
         -
+          name: filter
+          in: query
+          description: 'Filtro de status'
+          required: false
+          schema:
+            type: string
+        -
           name: includes
           in: query
           description: 'Faz o include das relações '
@@ -181,6 +188,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - books
