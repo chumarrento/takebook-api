@@ -51,3 +51,7 @@ $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 $router->get('rooms', 'Chat\\ChatController@getRooms');
 $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
 $router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');
+
+$router->get('reports', 'Report\\ReportController@getReports');
+$router->put('reports/{id}', 'Report\\ReportController@putReport');
+$router->delete('reports/{id}', 'Report\\ReportController@deleteReport');

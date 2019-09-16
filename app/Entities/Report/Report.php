@@ -14,11 +14,17 @@ class Report extends Model
         'denunciator_id',
         'reported_id',
         'type_id',
+        'status_id',
         'description'
     ];
 
     public function type()
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsTo(Type::class, 'type_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }

@@ -530,6 +530,64 @@ paths:
       security:
         -
           apiToken: []
+  /reports:
+    get:
+      tags:
+        - reports
+      summary: 'Lista todos os reports em análise'
+      operationId: GetReports
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/reports/{id}':
+    put:
+      tags:
+        - reports
+      summary: 'Atualiza um report'
+      operationId: PutReport
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do report'
+          required: true
+          schema:
+            type: integer
+        -
+          name: status_id
+          in: query
+          description: 'ID do status de report'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+    delete:
+      tags:
+        - reports
+      summary: 'Apaga um report'
+      operationId: DeleteReport
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do report'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users/me:
     get:
       tags:
