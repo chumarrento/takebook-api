@@ -296,7 +296,7 @@ class MeController extends ApiController
      *         description="Descrição da denúncia",
      *         required=false,
      *         @OA\Schema(
-     *           type="integer"
+     *           type="string"
      *         )
      *     ),
      *     @OA\Response(

@@ -768,7 +768,7 @@ paths:
           description: 'Descrição da denúncia'
           required: false
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: ...
