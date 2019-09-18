@@ -19,7 +19,7 @@ class Book extends Model
         'user_id'
     ];
 
-    protected $appends = ['count_likes'];
+    protected $appends = ['count_likes', 'user'];
 
     public function categories()
     {
@@ -45,5 +45,10 @@ class Book extends Model
     public function getCountLikesAttribute()
     {
         return $this->likes()->count();
+    }
+
+    public function getUserAttribute()
+    {
+        return $this->user()->getResults();
     }
 }

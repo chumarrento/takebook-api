@@ -170,13 +170,6 @@ paths:
           schema:
             type: string
         -
-          name: filter
-          in: query
-          description: 'Filtro de status'
-          required: false
-          schema:
-            type: string
-        -
           name: includes
           in: query
           description: 'Faz o include das relações '
@@ -188,9 +181,6 @@ paths:
       responses:
         '200':
           description: ...
-      security:
-        -
-          apiToken: []
     post:
       tags:
         - books
@@ -234,6 +224,18 @@ paths:
             type: array
             items:
               type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/validate:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros que precisam ser validados'
+      operationId: GetBooksToValidate
       responses:
         '200':
           description: ...
