@@ -24,6 +24,7 @@ $router->post('auth/reset', 'AuthController@reset');
 
 $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
+$router->post('users/me/avatar', 'User\\MeController@updateAvatar');
 $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');

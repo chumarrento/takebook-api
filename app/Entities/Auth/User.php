@@ -58,7 +58,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getAvatarUrlAttribute()
     {
-        return env('APP_URL') .'/storage/' . $this->avatar;
+        if (empty($this->avatar)) {
+            return null;
+        }
+        return env('APP_URL') .'/storage' . $this->avatar;
     }
 
     public function getJWTIdentifier()

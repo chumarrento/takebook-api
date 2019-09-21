@@ -677,6 +677,26 @@ paths:
       security:
         -
           apiToken: []
+  /users/me/avatar:
+    post:
+      tags:
+        - users
+      summary: 'Atualiza o avatar do usuário logado'
+      operationId: UpdateUserAvatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                avatar_file:
+                  type: file
+              type: object
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users/me/change:
     put:
       tags:
