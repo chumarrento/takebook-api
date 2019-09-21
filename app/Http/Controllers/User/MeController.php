@@ -178,7 +178,7 @@ class MeController extends ApiController
     public function updateAvatar(Request $request)
     {
         $file = $request->file('avatar_file');
-        $filename = "/users/avatar/" . str_random(16) . "-avatar." . $file->getClientOriginalExtension();
+        $filename = "avatars/" . str_random(16) . "-avatar." . $file->getClientOriginalExtension();
         if (Storage::exists($this->model->avatar)) {
             Storage::delete($this->model->avatar);
         }

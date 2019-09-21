@@ -61,7 +61,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if (empty($this->avatar)) {
             return null;
         }
-        return env('APP_URL') .'/storage' . $this->avatar;
+        return env('APP_URL') .'/storage/' . $this->avatar;
     }
 
     public function getJWTIdentifier()
