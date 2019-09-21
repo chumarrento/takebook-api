@@ -150,7 +150,10 @@ class ApiController extends BaseController
      */
     public function destroy(int $id)
     {
-        $this->repository->delete($id);
-        return $this->success();
+        if ($this->repository->delete($id)) {
+            return $this->success();
+        }
+
+        return $this->unprocessable();
     }
 }

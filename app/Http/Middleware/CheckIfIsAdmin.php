@@ -18,8 +18,11 @@ class CheckIfIsAdmin
 
     public function handle($request, Closure $next)
     {
+        if (!$request->header('authorization')) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
         if (!$this->auth::user()->is_admin) {
-            return response('Unauthorized.', 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return $next($request);

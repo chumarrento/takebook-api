@@ -24,6 +24,7 @@ $router->post('auth/reset', 'AuthController@reset');
 
 $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
+$router->post('users/me/avatar', 'User\\MeController@updateAvatar');
 $router->put('users/me/change', 'User\\MeController@change');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
@@ -42,6 +43,8 @@ $router->put('categories/{id}', 'Category\\CategoryController@putCategory');
 $router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory');
 
 $router->get('books', 'Book\\BookController@getBooks');
+$router->get('books/validate', 'Book\\BookController@getBooks');
+$router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
@@ -50,3 +53,7 @@ $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 $router->get('rooms', 'Chat\\ChatController@getRooms');
 $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
 $router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');
+
+$router->get('reports', 'Report\\ReportController@getReports');
+$router->put('reports/{id}', 'Report\\ReportController@putReport');
+$router->delete('reports/{id}', 'Report\\ReportController@deleteReport');

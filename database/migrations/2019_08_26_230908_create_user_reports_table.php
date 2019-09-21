@@ -18,12 +18,14 @@ class CreateUserReportsTable extends Migration
             $table->bigInteger('denunciator_id')->unsigned();
             $table->bigInteger('reported_id')->unsigned();
             $table->bigInteger('type_id')->unsigned();
+            $table->bigInteger('status_id')->default(1)->unsigned();
             $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('denunciator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reported_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('type_id')->references('id')->on('report_types')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('report_status')->onDelete('cascade');
         });
     }
 

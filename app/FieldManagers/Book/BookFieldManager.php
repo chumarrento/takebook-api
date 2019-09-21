@@ -21,9 +21,9 @@ class BookFieldManager extends FieldManager
         'price' => [
             'rules' => 'numeric'
         ],
-//        'categories' => [
-//            'rules' => 'array'
-//        ],
+        'categories' => [
+            'rules' => 'array'
+        ],
         'status' => [
             'rules' => 'boolean'
         ],

@@ -230,6 +230,30 @@ paths:
       security:
         -
           apiToken: []
+  /books/validate:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros que precisam ser validados'
+      operationId: GetBooksToValidate
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/week:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros aprovados na semana'
+      operationId: GetWeeklyBooks
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   '/books/{id}':
     get:
       tags:
@@ -292,6 +316,13 @@ paths:
           schema:
             type: string
         -
+          name: status
+          in: query
+          description: 'Status do livro (só para admin)'
+          required: false
+          schema:
+            type: string
+        -
           name: categories
           in: query
           description: 'IDs das categorias'
@@ -303,6 +334,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     delete:
       tags:
         - books
@@ -319,6 +353,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
   /categories:
     get:
       tags:
@@ -495,6 +532,64 @@ paths:
       security:
         -
           apiToken: []
+  /reports:
+    get:
+      tags:
+        - reports
+      summary: 'Lista todos os reports em análise'
+      operationId: GetReports
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/reports/{id}':
+    put:
+      tags:
+        - reports
+      summary: 'Atualiza um report'
+      operationId: PutReport
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do report'
+          required: true
+          schema:
+            type: integer
+        -
+          name: status_id
+          in: query
+          description: 'ID do status de report'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+    delete:
+      tags:
+        - reports
+      summary: 'Apaga um report'
+      operationId: DeleteReport
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do report'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users/me:
     get:
       tags:
@@ -576,6 +671,26 @@ paths:
           required: false
           schema:
             type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /users/me/avatar:
+    post:
+      tags:
+        - users
+      summary: 'Atualiza o avatar do usuário logado'
+      operationId: UpdateUserAvatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                avatar_file:
+                  type: file
+              type: object
       responses:
         '200':
           description: ...
@@ -675,7 +790,7 @@ paths:
           description: 'Descrição da denúncia'
           required: false
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: ...
@@ -733,70 +848,34 @@ paths:
         - users
       summary: 'Cria um novo usuário'
       operationId: StoreUser
-      parameters:
-        -
-          name: first_name
-          in: query
-          description: 'Primeiro nome'
-          required: true
-          schema:
-            type: string
-        -
-          name: last_name
-          in: query
-          description: 'Ultimo nome'
-          required: true
-          schema:
-            type: string
-        -
-          name: address_street
-          in: query
-          description: 'Rua onde o rapaz mora'
-          required: false
-          schema:
-            type: string
-        -
-          name: address_number
-          in: query
-          description: 'Numero da casa do rapaz'
-          required: false
-          schema:
-            type: string
-        -
-          name: address_city
-          in: query
-          description: 'Cidade onde o rapaz mora'
-          required: false
-          schema:
-            type: string
-        -
-          name: address_state
-          in: query
-          description: 'Rua onde o rapaz mora'
-          required: false
-          schema:
-            type: string
-        -
-          name: address_zip_code
-          in: query
-          description: 'CEP onde o rapaz mora'
-          required: false
-          schema:
-            type: string
-        -
-          name: email
-          in: query
-          description: 'E-mail do cidadão'
-          required: true
-          schema:
-            type: string
-        -
-          name: password
-          in: query
-          description: 'Senha do cidadão'
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                avatar_file:
+                  type: file
+                address_street:
+                  type: string
+                address_number:
+                  type: string
+                address_neighborhood:
+                  type: string
+                address_city:
+                  type: string
+                address_state:
+                  type: string
+                address_zip_code:
+                  type: string
+              type: object
       responses:
         '200':
           description: ...

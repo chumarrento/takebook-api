@@ -15,8 +15,8 @@ class BookObserver
     {
         $users = User::where('is_admin', '=', true)->get();
 
-       foreach ($users as $user) {
-           Mail::to($user)->send(new NotifyAdminMail(['user' => $user, 'book' => $book]));
-       }
+//       foreach ($users as $user) {
+//           Mail::to($user)->send(new NotifyAdminMail(['user' => $user, 'book' => $book]));
+//       }
     }
 }

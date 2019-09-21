@@ -12,6 +12,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class MeController extends ApiController
 {
@@ -146,6 +147,44 @@ class MeController extends ApiController
             'email' => 'email',
         ]);
 
+        return parent::update($request, $this->model->getAuthIdentifier());
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/users/me/avatar",
+     *     summary="Atualiza o avatar do usuário logado",
+     *     operationId="UpdateUserAvatar",
+     *     tags={"users"},
+     *     security={{"apiToken":{}}},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="avatar_file",
+     *                     type="file"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     ),
+     *  )
+     */
+    public function updateAvatar(Request $request)
+    {
+        $file = $request->file('avatar_file');
+        $filename = "avatars/" . str_random(16) . "-avatar." . $file->getClientOriginalExtension();
+        if (Storage::exists($this->model->avatar)) {
+            Storage::delete($this->model->avatar);
+        }
+        Storage::put($filename, file_get_contents($file));
+
+        $request->merge(['avatar' => $filename]);
         return parent::update($request, $this->model->getAuthIdentifier());
     }
 
@@ -296,7 +335,7 @@ class MeController extends ApiController
      *         description="Descrição da denúncia",
      *         required=false,
      *         @OA\Schema(
-     *           type="integer"
+     *           type="string"
      *         )
      *     ),
      *     @OA\Response(

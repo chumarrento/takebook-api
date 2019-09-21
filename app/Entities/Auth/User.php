@@ -31,6 +31,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $fillable = [
         'first_name',
         'last_name',
+        'avatar',
         'email',
         'password',
         'address_street',
@@ -49,10 +50,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
-        'is_admin'
+        'is_admin',
+        'avatar'
     ];
 
-    protected $appends = ['likes'];
+    protected $appends = ['likes', 'avatar_url'];
+
+    public function getAvatarUrlAttribute()
+    {
+        if (empty($this->avatar)) {
+            return null;
+        }
+        return env('APP_URL') .'/storage/' . $this->avatar;
+    }
 
     public function getJWTIdentifier()
     {
