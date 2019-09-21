@@ -15,8 +15,11 @@ class UserFieldManager extends FieldManager
         'last_name' => [
             'rules' => 'string',
         ],
+        'avatar_file' => [
+            'rules' => 'image',
+        ],
         'email' => [
-            'rules' => 'email',
+            'rules' => 'email|unique:users',
         ],
         'password' => [
             'rules' => 'string',
@@ -49,7 +52,7 @@ class UserFieldManager extends FieldManager
         $fields = [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required'
         ];
 
