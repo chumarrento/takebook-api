@@ -23,10 +23,10 @@ class UsersSeeder extends Seeder
                 'is_admin' => true
             ],
             [
-                'first_name' => 'André',
-                'last_name' => 'Felipe',
-                'email' => 'slamermao@coloca.com',
-                'password' => Hash::make('123123'),
+                'first_name' => 'Felipe',
+                'last_name' => 'Barros',
+                'email' => 'felipebarros.dev@gmail.com',
+                'password' => Hash::make('12345'),
                 'is_admin' => true
             ]
         ];

@@ -21,7 +21,7 @@ class UserRepository extends Repository
         if (array_key_exists('is_admin', $data)) {
             unset($data['is_admin']);
         }
-
+        
         $data['password'] = Hash::make($data['password']);
         return parent::create($data);
     }
