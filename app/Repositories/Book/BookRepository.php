@@ -7,6 +7,8 @@ namespace App\Repositories\Book;
 use App\Entities\Book\Book;
 use App\Repositories\Repository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BookRepository extends Repository
 {
@@ -28,6 +30,16 @@ class BookRepository extends Repository
 
         foreach ($data['categories'] as $category) {
             $this->attach($book->id, $category, 'categories');
+        }
+
+        foreach ($data['images'] as $image) {
+            $fileName = "covers/" . Str::random(16) . "-cover." . $image->getClientOriginalExtension();
+
+            Storage::put($fileName, file_get_contents($image));
+
+            $book->images()->create([
+                'cover' => $fileName
+            ]);
         }
 
         return $book;
