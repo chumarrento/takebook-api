@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserController extends ApiController
 {
@@ -154,10 +155,10 @@ class UserController extends ApiController
     public function postUser(Request $request)
     {
         $file = $request->file('avatar_file');
-        $fileName = "avatars/" . str_random(16) . "-avatar." . $file->getClientOriginalExtension();
-        
+        $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
+
         Storage::put($fileName, file_get_contents($file));
-        
+
         $request->merge(['avatar' => $fileName]);
         return parent::store($request);
     }
