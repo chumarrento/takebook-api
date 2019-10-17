@@ -19,7 +19,7 @@ class Book extends Model
         'user_id'
     ];
 
-    protected $appends = ['count_likes', 'user'];
+    protected $appends = ['count_likes', 'user', 'covers_url'];
 
     public function categories()
     {
@@ -42,6 +42,11 @@ class Book extends Model
             'user_id')->withTimestamps();
     }
 
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'book_id', 'id');
+    }
+
     public function getCountLikesAttribute()
     {
         return $this->likes()->count();
@@ -50,5 +55,16 @@ class Book extends Model
     public function getUserAttribute()
     {
         return $this->user()->getResults();
+    }
+
+    public function getCoversUrlAttribute()
+    {
+        $data = [];
+        foreach ($this->images()->getResults() as $image) {
+            $url = env('APP_URL') .'/storage/' . $image->cover;
+            $data[] = ['url' => $url, 'image_id' => $image->id];
+        }
+
+        return $data;
     }
 }

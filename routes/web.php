@@ -50,6 +50,9 @@ $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
 $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
+$router->post('books/{bookId}/image/{imageId}', 'Book\\ImageController@updateImage');
+$router->delete('books/{bookId}/image/{imageId}', 'Book\\ImageController@deleteImage');
+
 $router->get('rooms', 'Chat\\ChatController@getRooms');
 $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
 $router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');

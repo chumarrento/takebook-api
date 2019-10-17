@@ -13,6 +13,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends ApiController
 {
@@ -183,6 +184,21 @@ class BookController extends ApiController
      *           @OA\Items(type="string")
      *         )
      *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="images[1]",
+     *                     type="file"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="images[2]",
+     *                     type="file"
+     *                 ),
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="...",
@@ -196,6 +212,15 @@ class BookController extends ApiController
 
         foreach ($categories as $category) {
             Category::findOrFail($category);
+        }
+
+        foreach ($request->images as $image) {
+            $image = ['image' => $image];
+            $validator = Validator::make($image, ['image' => 'required|image']);
+
+            if($validator->fails()) {
+                return $this->unprocessable(['error' => "File isn't valid."]);
+            }
         }
 
         $request->merge([

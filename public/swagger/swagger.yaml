@@ -224,6 +224,16 @@ paths:
             type: array
             items:
               type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                'images[1]':
+                  type: file
+                'images[2]':
+                  type: file
+              type: object
       responses:
         '200':
           description: ...
@@ -350,6 +360,67 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/books/{bookId}/image/{imageId}':
+    post:
+      tags:
+        - books
+      summary: 'Atualiza uma imagem de um livro'
+      operationId: UpdateBookImage
+      parameters:
+        -
+          name: bookId
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: imageId
+          in: path
+          description: 'ID da imagem'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                cover_file:
+                  type: file
+              type: object
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+    delete:
+      tags:
+        - books
+      summary: 'Apaga uma imagem de um livro'
+      operationId: DeleteBookImage
+      parameters:
+        -
+          name: bookId
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: string
+        -
+          name: imageId
+          in: path
+          description: 'ID da imagem'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: ...

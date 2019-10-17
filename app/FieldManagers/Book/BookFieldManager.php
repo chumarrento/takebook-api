@@ -39,7 +39,7 @@ class BookFieldManager extends FieldManager
             'author' => 'required',
             'description' => 'required',
             'price' => 'required',
-//            'categories' => 'required',
+            'categories' => 'required',
             'user_id' => 'required'
         ];
 

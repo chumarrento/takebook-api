@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MeController extends ApiController
 {
@@ -178,7 +179,7 @@ class MeController extends ApiController
     public function updateAvatar(Request $request)
     {
         $file = $request->file('avatar_file');
-        $filename = "avatars/" . str_random(16) . "-avatar." . $file->getClientOriginalExtension();
+        $filename = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
         if (Storage::exists($this->model->avatar)) {
             Storage::delete($this->model->avatar);
         }
