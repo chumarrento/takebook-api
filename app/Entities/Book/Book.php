@@ -59,12 +59,12 @@ class Book extends Model
 
     public function getCoversUrlAttribute()
     {
-        $urls = [];
+        $data = [];
         foreach ($this->images()->getResults() as $image) {
             $url = env('APP_URL') .'/storage/' . $image->cover;
-            array_push($urls, $url);
+            $data[] = ['url' => $url, 'image_id' => $image->id];
         }
 
-        return $urls;
+        return $data;
     }
 }

@@ -184,6 +184,21 @@ class BookController extends ApiController
      *           @OA\Items(type="string")
      *         )
      *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="images[1]",
+     *                     type="file"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="images[2]",
+     *                     type="file"
+     *                 ),
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="...",
