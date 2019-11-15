@@ -768,7 +768,7 @@ paths:
       security:
         -
           apiToken: []
-  /users/me/change:
+  /users/me/reset:
     put:
       tags:
         - users

@@ -25,7 +25,7 @@ $router->post('auth/reset', 'AuthController@reset');
 $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
 $router->post('users/me/avatar', 'User\\MeController@updateAvatar');
-$router->put('users/me/change', 'User\\MeController@change');
+$router->put('users/me/reset', 'User\\MeController@changePassword');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
 $router->post('users/me/reports/{reportedId}', 'User\\MeController@report');
@@ -43,7 +43,7 @@ $router->put('categories/{id}', 'Category\\CategoryController@putCategory');
 $router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory');
 
 $router->get('books', 'Book\\BookController@getBooks');
-$router->get('books/validate', 'Book\\BookController@getBooks');
+$router->get('books/validate', 'Book\\BookController@getBooksToValidate');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
