@@ -214,12 +214,14 @@ class BookController extends ApiController
             Category::findOrFail($category);
         }
 
-        foreach ($request->images as $image) {
-            $image = ['image' => $image];
-            $validator = Validator::make($image, ['image' => 'required|image']);
+        if ($request->has('images')) {
+            foreach ($request->images as $image) {
+                $image = ['image' => $image];
+                $validator = Validator::make($image, ['image' => 'required|image']);
 
-            if($validator->fails()) {
-                return $this->unprocessable(['error' => "File isn't valid."]);
+                if ($validator->fails()) {
+                    return $this->unprocessable($validator->errors()->messages());
+                }
             }
         }
 

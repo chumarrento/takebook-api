@@ -27,6 +27,9 @@ class BookFieldManager extends FieldManager
         'status' => [
             'rules' => 'boolean'
         ],
+        'images' => [
+            'rules' => 'array|max:5'
+        ],
         'user_id' => [
             'rules' => 'integer|exists:users,id'
         ]
@@ -40,6 +43,7 @@ class BookFieldManager extends FieldManager
             'description' => 'required',
             'price' => 'required',
             'categories' => 'required',
+            'images' => 'required',
             'user_id' => 'required'
         ];
 

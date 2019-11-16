@@ -19,7 +19,7 @@ class BookRepository extends Repository
 
     public function findAll()
     {
-        $data = $this->model->where('status', false)->paginate(15);
+        $data = $this->model->where('status', false)->paginate(9);
         return $data;
     }
 
