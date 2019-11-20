@@ -118,7 +118,7 @@ class BookController extends ApiController
     public function getWeeklyBooks()
     {
         $date = Carbon::now()->startOfWeek()->endOfWeek();
-        $books = $this->model->where('status', true)->get();
+        $books = $this->model->where('status_id', 2)->get();
         $data = [];
         foreach ($books as $book) {
             if ($date->diffInWeeks($book->updated_at) == 0) {
