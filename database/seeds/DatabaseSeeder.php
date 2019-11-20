@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,5 +15,6 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersSeeder::class);
          $this->call(TypeSeeder::class);
          $this->call(StatusSeeder::class);
+         $this->call(BookStatusSeeder::class);
     }
 }

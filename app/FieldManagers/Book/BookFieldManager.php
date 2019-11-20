@@ -24,8 +24,8 @@ class BookFieldManager extends FieldManager
         'categories' => [
             'rules' => 'array'
         ],
-        'status' => [
-            'rules' => 'boolean'
+        'status_id' => [
+            'rules' => 'integer|exists:book_status,id'
         ],
         'images' => [
             'rules' => 'array|max:5'
@@ -66,7 +66,7 @@ class BookFieldManager extends FieldManager
                 'type' => 'equals'
             ],
             [
-                'field' => 'status',
+                'field' => 'status_id',
                 'type' => 'equals'
             ]
         ];

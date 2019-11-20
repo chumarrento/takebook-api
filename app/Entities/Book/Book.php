@@ -15,7 +15,7 @@ class Book extends Model
         'author',
         'description',
         'price',
-        'status',
+        'status_id',
         'user_id'
     ];
 
@@ -45,6 +45,11 @@ class Book extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'book_id', 'id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 
     public function getCountLikesAttribute()

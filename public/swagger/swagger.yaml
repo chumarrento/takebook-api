@@ -326,13 +326,6 @@ paths:
           schema:
             type: string
         -
-          name: status
-          in: query
-          description: 'Status do livro (só para admin)'
-          required: false
-          schema:
-            type: string
-        -
           name: categories
           in: query
           description: 'IDs das categorias'
@@ -357,6 +350,33 @@ paths:
           name: id
           in: path
           description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/books/{id}/status':
+    put:
+      tags:
+        - books
+      summary: 'Atualiza o status de um livro'
+      operationId: PutStatusBooks
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+        -
+          name: status_id
+          in: query
+          description: 'Status do livro (só para admin)'
           required: true
           schema:
             type: integer
@@ -421,6 +441,18 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/status:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os status de livros'
+      operationId: GetStatusBooks
       responses:
         '200':
           description: ...
