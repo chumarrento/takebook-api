@@ -15,6 +15,8 @@ class Book extends Model
         'author',
         'description',
         'price',
+        'approved_at',
+        'condition_id',
         'status_id',
         'user_id'
     ];
@@ -50,6 +52,11 @@ class Book extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
+
+    public function conditions()
+    {
+        return $this->belongsTo(Condition::class, 'condition_id', 'id');
     }
 
     public function getCountLikesAttribute()

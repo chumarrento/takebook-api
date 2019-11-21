@@ -44,12 +44,13 @@ $router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory'
 
 $router->get('books', 'Book\\BookController@getBooks');
 $router->get('books/status', 'Book\\StatusController@getStatus');
+$router->get('books/conditions', 'Book\\ConditionController@getConditons');
 $router->get('books/validate', 'Book\\BookController@getBooksToValidate');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
-$router->put('books/{id}/status', 'Book\\BookController@status');
+$router->put('books/{id}/status', 'Book\\BookController@changeStatus');
 $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
 $router->post('books/{bookId}/image/{imageId}', 'Book\\ImageController@updateImage');

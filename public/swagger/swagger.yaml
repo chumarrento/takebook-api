@@ -216,6 +216,13 @@ paths:
           schema:
             type: string
         -
+          name: condtion_id
+          in: query
+          description: 'ID da estado do livro (1 - Novo, 2 - Semi-novo, 3 - Usado)'
+          required: true
+          schema:
+            type: string
+        -
           name: categories
           in: query
           description: 'IDs das categorias'
@@ -380,6 +387,18 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/conditions:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os estados de livros'
+      operationId: GetConditionsBooks
       responses:
         '200':
           description: ...
