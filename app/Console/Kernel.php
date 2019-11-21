@@ -2,7 +2,12 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ScheduleDelete;
+use App\Entities\Book\Book;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -13,7 +18,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        ScheduleDelete::class
     ];
 
     /**
