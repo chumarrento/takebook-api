@@ -21,7 +21,7 @@ class Book extends Model
         'user_id'
     ];
 
-    protected $appends = ['count_likes', 'user', 'covers_url'];
+    protected $appends = ['categories', 'count_likes', 'user', 'covers_url'];
 
     public function categories()
     {
@@ -57,6 +57,16 @@ class Book extends Model
     public function conditions()
     {
         return $this->belongsTo(Condition::class, 'condition_id', 'id');
+    }
+
+    public function getCategoriesAttribute()
+    {
+        $data = $this->categories()->getResults();
+
+        foreach ($data as $category) {
+            unset($category['pivot']);
+        }
+        return $data;
     }
 
     public function getCountLikesAttribute()

@@ -712,6 +712,18 @@ paths:
       security:
         -
           apiToken: []
+  /reports/status:
+    get:
+      tags:
+        - reports
+      summary: 'Lista todos os status de denúncias'
+      operationId: GetStatusReports
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users/me:
     get:
       tags:

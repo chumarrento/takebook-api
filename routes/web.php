@@ -61,5 +61,6 @@ $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
 $router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');
 
 $router->get('reports', 'Report\\ReportController@getReports');
+$router->get('reports/status', 'Report\\StatusController@getStatus');
 $router->put('reports/{id}', 'Report\\ReportController@putReport');
 $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');
