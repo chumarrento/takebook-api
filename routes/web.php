@@ -25,7 +25,7 @@ $router->post('auth/reset', 'AuthController@reset');
 $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
 $router->post('users/me/avatar', 'User\\MeController@updateAvatar');
-$router->put('users/me/change', 'User\\MeController@change');
+$router->put('users/me/reset', 'User\\MeController@changePassword');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
 $router->post('users/me/reports/{reportedId}', 'User\\MeController@report');
@@ -43,11 +43,14 @@ $router->put('categories/{id}', 'Category\\CategoryController@putCategory');
 $router->delete('categories/{id}', 'Category\\CategoryController@deleteCategory');
 
 $router->get('books', 'Book\\BookController@getBooks');
-$router->get('books/validate', 'Book\\BookController@getBooks');
+$router->get('books/status', 'Book\\StatusController@getStatus');
+$router->get('books/conditions', 'Book\\ConditionController@getConditons');
+$router->get('books/validate', 'Book\\BookController@getBooksToValidate');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
+$router->put('books/{id}/status', 'Book\\BookController@changeStatus');
 $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
 $router->post('books/{bookId}/image/{imageId}', 'Book\\ImageController@updateImage');
@@ -58,5 +61,6 @@ $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
 $router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@storeMessage');
 
 $router->get('reports', 'Report\\ReportController@getReports');
+$router->get('reports/status', 'Report\\StatusController@getStatus');
 $router->put('reports/{id}', 'Report\\ReportController@putReport');
 $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');

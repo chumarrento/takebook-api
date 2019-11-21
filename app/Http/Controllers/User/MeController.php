@@ -191,7 +191,7 @@ class MeController extends ApiController
 
     /**
      * @OA\Put(
-     *     path="/users/me/change",
+     *     path="/users/me/reset",
      *     summary="Atualiza a senha do usuário",
      *     operationId="UpdateAuthUserPassword",
      *     tags={"users"},
@@ -229,7 +229,7 @@ class MeController extends ApiController
      *     ),
      *  )
      */
-    public function change(Request $request)
+    public function changePassword(Request $request)
     {
         $this->validate($request, [
             'old_password' => 'required|string',

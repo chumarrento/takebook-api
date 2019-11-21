@@ -15,11 +15,13 @@ class Book extends Model
         'author',
         'description',
         'price',
-        'status',
+        'approved_at',
+        'condition_id',
+        'status_id',
         'user_id'
     ];
 
-    protected $appends = ['count_likes', 'user', 'covers_url'];
+    protected $appends = ['categories', 'count_likes', 'user', 'covers_url'];
 
     public function categories()
     {
@@ -45,6 +47,26 @@ class Book extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'book_id', 'id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
+
+    public function conditions()
+    {
+        return $this->belongsTo(Condition::class, 'condition_id', 'id');
+    }
+
+    public function getCategoriesAttribute()
+    {
+        $data = $this->categories()->getResults();
+
+        foreach ($data as $category) {
+            unset($category['pivot']);
+        }
+        return $data;
     }
 
     public function getCountLikesAttribute()

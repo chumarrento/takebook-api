@@ -24,8 +24,14 @@ class BookFieldManager extends FieldManager
         'categories' => [
             'rules' => 'array'
         ],
-        'status' => [
-            'rules' => 'boolean'
+        'condition_id' => [
+            'rules' => 'integer|exists:book_conditions,id'
+        ],
+        'status_id' => [
+            'rules' => 'integer|exists:book_status,id'
+        ],
+        'images' => [
+            'rules' => 'array|max:5'
         ],
         'user_id' => [
             'rules' => 'integer|exists:users,id'
@@ -40,6 +46,8 @@ class BookFieldManager extends FieldManager
             'description' => 'required',
             'price' => 'required',
             'categories' => 'required',
+            'images' => 'required',
+            'condition_id' => 'required',
             'user_id' => 'required'
         ];
 
@@ -62,7 +70,11 @@ class BookFieldManager extends FieldManager
                 'type' => 'equals'
             ],
             [
-                'field' => 'status',
+                'field' => 'status_id',
+                'type' => 'equals'
+            ],
+            [
+                'field' => 'condition_id',
                 'type' => 'equals'
             ]
         ];
