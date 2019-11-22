@@ -134,6 +134,10 @@ class ApiController extends BaseController
         $this->validate($request, $this->fieldManager->update());
         $resource = $this->repository->update($request->all(), $id);
 
+        if (!$resource) {
+            return $this->bad();
+        }
+
         if ($includes = $request->get('includes')) {
             $includes = is_array($includes) ? $includes : explode(',', $includes);
             $resource->load($includes);
@@ -151,7 +155,7 @@ class ApiController extends BaseController
     public function destroy(int $id)
     {
         if ($this->repository->delete($id)) {
-            return $this->success();
+            return $this->noContent();
         }
 
         return $this->unprocessable();

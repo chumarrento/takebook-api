@@ -154,12 +154,15 @@ class UserController extends ApiController
      */
     public function postUser(Request $request)
     {
-        $file = $request->file('avatar_file');
-        $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
+        if ($request->has('avatar_file')) {
+            $file = $request->file('avatar_file');
+            $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
 
-        Storage::put($fileName, file_get_contents($file));
+            Storage::put($fileName, file_get_contents($file));
 
-        $request->merge(['avatar' => $fileName]);
+            $request->merge(['avatar' => $fileName]);
+        }
+
         return parent::store($request);
     }
 

@@ -175,7 +175,7 @@ class BookController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="condtion_id",
+     *         name="condition_id",
      *         in="query",
      *         description="ID da estado do livro (1 - Novo, 2 - Semi-novo, 3 - Usado)",
      *         required=true,
