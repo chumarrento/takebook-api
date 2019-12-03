@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class BookController extends ApiController
 {
@@ -25,7 +27,7 @@ class BookController extends ApiController
         $this->fieldManager = $fieldManager;
         $this->model = $model;
         $this->repository = $repository;
-        $this->middleware('auth:api', ['except' => ['getBooks']]);
+        $this->middleware('auth:api', ['except' => ['getBooks', 'getHighlightsBooks']]);
         $this->middleware('admin', ['only' => ['getBooksToValidate', 'status']]);
     }
 
@@ -57,6 +59,15 @@ class BookController extends ApiController
      *         name="user_id",
      *         in="query",
      *         description="ID do anunciante",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="orderBy",
+     *         in="query",
+     *         description="Ordernar pela data de aprovação",
      *         required=false,
      *         @OA\Schema(
      *           type="string"
@@ -119,16 +130,36 @@ class BookController extends ApiController
     public function getWeeklyBooks()
     {
         $date = Carbon::now()->startOfWeek()->endOfWeek();
-        $books = $this->model->where('status_id', 2)->get();
+        $books = $this->model->where('status_id', Status::APPROVED)->get();
         $data = [];
         foreach ($books as $book) {
-            if ($date->diffInWeeks($book->updated_at) == 0) {
+            if ($date->diffInWeeks($book->approved_at) == 0) {
                 array_push($data, $book);
             }
         }
-
-
+        
         $data['count'] = count($data);
+        return $this->success($data);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/books/highlights",
+     *     summary="Lista os livros ordenados pela quantidade de likes",
+     *     operationId="GetHighlightsBooks",
+     *     tags={"books"},
+     *     security={{"apiToken":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="...",
+     *     ),
+     *  )
+     */
+    public function getHighlightsBooks()
+    {
+        $data = $this->model->where('status_id', Status::APPROVED)->withCount('likes')
+            ->orderBy('likes_count', 'desc')->get();
+
         return $this->success($data);
     }
 

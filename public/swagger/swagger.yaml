@@ -170,6 +170,13 @@ paths:
           schema:
             type: string
         -
+          name: orderBy
+          in: query
+          description: 'Ordernar pela data de aprovação'
+          required: false
+          schema:
+            type: string
+        -
           name: includes
           in: query
           description: 'Faz o include das relações '
@@ -265,6 +272,18 @@ paths:
         - books
       summary: 'Lista todos os livros aprovados na semana'
       operationId: GetWeeklyBooks
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/highlights:
+    get:
+      tags:
+        - books
+      summary: 'Lista os livros ordenados pela quantidade de likes'
+      operationId: GetHighlightsBooks
       responses:
         '200':
           description: ...

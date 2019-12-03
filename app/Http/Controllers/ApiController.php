@@ -73,6 +73,10 @@ class ApiController extends BaseController
             }
         }
 
+        if ($request->has('orderBy') && $request->path() === 'books') {
+            $query = $query->orderBy('approved_at', 'desc');
+        }
+
         if ($includes = $request->get('includes')) {
             $includes = is_array($includes) ? $includes : explode(',', $includes);
             $query = $query->with($includes);
