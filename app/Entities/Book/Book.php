@@ -76,7 +76,7 @@ class Book extends Model
 
     public function getUserAttribute()
     {
-        return $this->user()->getResults();
+       return $this->user()->get(['id']);
     }
 
     public function getCoversUrlAttribute()

@@ -47,6 +47,7 @@ $router->get('books/status', 'Book\\StatusController@getStatus');
 $router->get('books/conditions', 'Book\\ConditionController@getConditons');
 $router->get('books/validate', 'Book\\BookController@getBooksToValidate');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
+$router->get('books/highlights', 'Book\\BookController@getHighlightsBooks');
 $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');

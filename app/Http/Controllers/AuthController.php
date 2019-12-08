@@ -65,8 +65,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
         $user = User::where([
-            ['email', $request->input('email')],
-            ['is_admin', 0]
+            ['email', $request->input('email')]
         ])->first();
 
         if (!$user) {

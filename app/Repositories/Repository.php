@@ -335,6 +335,18 @@ abstract class Repository
     }
 
     /**
+     * Sync relation
+     */
+    public function sync($idParent, $relation, $children = [])
+    {
+        $parent = $this->find($idParent);
+
+        $parent->$relation()->sync($children);
+
+        return $parent;
+    }
+
+    /**
      * Detach relation
      *
      * @return \Illuminate\Database\Eloquent\Model;

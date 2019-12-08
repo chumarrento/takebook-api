@@ -15,8 +15,6 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-
-use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
@@ -53,8 +51,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'is_admin',
         'avatar'
     ];
-
-    protected $appends = ['likes', 'avatar_url'];
+    protected $with = ['likes'];
+    protected $appends = ['avatar_url'];
 
     public function getAvatarUrlAttribute()
     {
@@ -108,25 +106,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Book::class, 'user_id', 'id');
     }
 
-    public function likes()
-    {
-        return $this->belongsToMany(Book::class,
-            'user_like_books',
-            'user_id',
-            'book_id')->withTimestamps();
-    }
-
-    public function getLikesAttribute()
-    {
-        $book_ids = $this->likes()->get();
-        $data = [];
-        foreach ($book_ids as $book_id) {
-            array_push($data, Book::find($book_id));
-        }
-
-        return $data;
-    }
-
     public function rooms()
     {
         return $this->belongsToMany(User::class,
@@ -162,5 +141,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         )
             ->withPivot(['type_id', 'description'])
             ->withTimestamps();
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Book::class,
+            'user_like_books',
+            'user_id',
+            'book_id')->withTimestamps();
     }
 }

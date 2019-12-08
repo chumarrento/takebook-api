@@ -293,7 +293,7 @@ class MeController extends ApiController
     {
         $data = Book::findOrFail($bookId);
 
-        $verify = $this->model->likes()->where('book_id', '=', $bookId)->first();
+        $verify = $this->model->likes()->where('book_id', $bookId)->first();
 
         if ($verify) {
             $data->likes()->detach(Auth::user()->getAuthIdentifier());
