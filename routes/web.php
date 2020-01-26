@@ -65,3 +65,8 @@ $router->get('reports', 'Report\\ReportController@getReports');
 $router->get('reports/status', 'Report\\StatusController@getStatus');
 $router->put('reports/{id}', 'Report\\ReportController@putReport');
 $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');
+
+$router->post('sw/subscriptions', 'Notification\\ServiceWorkerController@subscribeClient');
+$router->delete('sw/subscriptions/{id}', 'Notification\\ServiceWorkerController@unsubscribeClient');
+
+$router->put('notification/{user_id}/{notification_id}', 'Notification\\NotificationController@subscribeClient');

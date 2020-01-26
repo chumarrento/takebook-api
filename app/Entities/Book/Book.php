@@ -6,6 +6,7 @@ namespace App\Entities\Book;
 
 use App\Entities\Auth\User;
 use App\Entities\Category\Category;
+use App\Entities\Notification;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -58,6 +59,11 @@ class Book extends Model
     {
         return $this->belongsTo(Condition::class, 'condition_id', 'id');
     }
+
+    public function notification()
+	{
+		return $this->hasMany(Notification::class, 'book_id');
+	}
 
     public function getCategoriesAttribute()
     {
