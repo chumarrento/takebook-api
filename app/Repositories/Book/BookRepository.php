@@ -19,12 +19,6 @@ class BookRepository extends Repository
 		$this->model = new Book();
 	}
 
-	public function findAll()
-	{
-		$data = $this->model->where('status_id', 1)->paginate(9);
-		return $data;
-	}
-
 	public function create(array $data)
 	{
 		unset($data['status_id']);

@@ -49,6 +49,8 @@ $router->get('books', 'Book\\BookController@getBooks');
 $router->get('books/status', 'Book\\StatusController@getStatus');
 $router->get('books/conditions', 'Book\\ConditionController@getConditons');
 $router->get('books/validate', 'Book\\BookController@getBooksToValidate');
+$router->get('books/approved', 'Book\\BookController@getApprovedBooks');
+$router->get('books/refused', 'Book\\BookController@getRefusedBooks');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->get('books/highlights', 'Book\\BookController@getHighlightsBooks');
 $router->post('books', 'Book\\BookController@postBook');
@@ -72,5 +74,5 @@ $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');
 $router->post('sw/subscriptions', 'Notification\\ServiceWorkerController@subscribeClient');
 $router->delete('sw/subscriptions/{id}', 'Notification\\ServiceWorkerController@unsubscribeClient');
 
-$router->put('notification/{user_id}/{notification_id}', 'Notification\\NotificationController@subscribeClient');
+$router->put('notification/{notificationId}', 'Notification\\NotificationController@openNotification');
 

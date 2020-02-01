@@ -27,7 +27,7 @@ class BookController extends ApiController
         $this->fieldManager = $fieldManager;
         $this->model = $model;
         $this->repository = $repository;
-        $this->middleware('auth:api', ['except' => ['getBooks', 'getHighlightsBooks']]);
+        $this->middleware('auth:api', ['except' => ['getApprovedBooks', 'getHighlightsBooks']]);
         $this->middleware('admin', ['only' => ['getBooksToValidate', 'status']]);
     }
 
@@ -109,10 +109,48 @@ class BookController extends ApiController
      */
     public function getBooksToValidate()
     {
-        $data = $this->repository->findAll();
+        $data = $this->model->where('status_id', Status::ANALYZE);
         return $this->success($data);
     }
-	// TODO endpoints para livros aprovados e outra pra rejeitados
+
+	/**
+	 * @OA\Get(
+	 *     path="/books/approved",
+	 *     summary="Lista todos os livros aprovados",
+	 *     operationId="GetApprovedBooks",
+	 *     tags={"books"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+    public function getApprovedBooks()
+	{
+		$data = $this->model->where('status_id', Status::APPROVED);
+		return $this->success($data);
+	}
+
+	/**
+	 * @OA\Get(
+	 *     path="/books/refused",
+	 *     summary="Lista todos os livros recusados",
+	 *     operationId="GetRefusedBooks",
+	 *     tags={"books"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+	public function getRefusedBooks()
+	{
+		$data = $this->model->where('status_id', Status::DISAPPROVED);
+		return $this->success($data);
+	}
+
     /**
      * @OA\Get(
      *     path="/books/week",

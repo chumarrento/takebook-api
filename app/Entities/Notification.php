@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
 	protected $fillable = [
-		'reason', 'book_id', 'user_id'
+		'reason', 'opened', 'book_id', 'user_id'
 	];
 
-	protected $hidden = ['book_id', 'user_id'];
+	protected $hidden = ['book_id'];
 
 	public function book()
 	{

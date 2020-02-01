@@ -5,18 +5,29 @@ namespace App\Http\Controllers\Notification;
 
 
 use App\Entities\Notification;
+use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class NotificationController
+class NotificationController extends Controller
 {
+	use ApiResponse;
 
-	public function openNotification(Request $request)
+	public function __construct()
 	{
-		$notification = Notification::find($request->notification_id);
-		if(!$notification) return response()->json(['ok' => 'false', 'error' => 'Notification not found'], 404);
+		$this->middleware('auth');
+	}
+
+	public function openNotification(Request $request, int $notificationId)
+	{
+		$notification = Notification::findOrFail($notificationId);
+
+		if ($notification->user_id == Auth::user()->getAuthIdentifier()) return $this->unauthorized();
+
 		$notification->opened = true;
 		$notification->save();
-		return response()->json(['ok' => 'true'], 200);
+		return $this->success(['ok' => 'true']);
 	}
 
 }
