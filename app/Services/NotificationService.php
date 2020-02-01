@@ -2,6 +2,7 @@
 
 
 namespace App\Services;
+
 use App\Entities\Book\Book;
 use App\Entities\Notification;
 use App\Entities\SWClient;
@@ -28,6 +29,15 @@ class NotificationService
 			$this->webPush = new WebPush($this->auth);
 		} catch (\ErrorException $e) {
 		}
+	}
+
+	public function createNotification($book)
+	{
+		Notification::create([
+			'reason' => 'BOOK_CREATED',
+			'book_id' => $book->id,
+			'user_id' => $book->user_id
+		]);
 	}
 
 	public function sendWebPushNotification(SWClient $serviceWorkerClient, $notification)
