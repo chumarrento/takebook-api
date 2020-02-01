@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Events;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class NewNotification implements ShouldBroadcast
 {
-	use InteractsWithSockets, SerializesModels;
+	use InteractsWithSockets, SerializesModels, Queueable;
 
 	public $message;
 	protected $channel;

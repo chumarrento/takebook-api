@@ -99,6 +99,9 @@ $app->register(Illuminate\Redis\RedisServiceProvider::class);
 //CORS
 $app->configure('cors');
 
+//REDIS
+//$app->configure('database');
+
 //Mailable
 $app->configure('mail');
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
