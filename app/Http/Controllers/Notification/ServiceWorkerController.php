@@ -3,10 +3,21 @@
 
 namespace App\Http\Controllers\Notification;
 use App\Entities\SWClient;
+use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ServiceWorkerController
+class ServiceWorkerController extends Controller
 {
+	use ApiResponse;
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		$this->model = Auth::user();
+	}
+
 	public function subscribeClient(Request $request)
 	{
 		$swclient = SWClient::updateOrCreate([
@@ -20,13 +31,24 @@ class ServiceWorkerController
 			'user_token' => $request->user_token
 		]);
 
-		return response()->json(['ok' => 'true', 'swclient' => $swclient], 200);
+		return $this->success(['ok' => 'true', 'swclient' => $swclient]);
 	}
 	public function unsubscribeClient(Request $request)
 	{
 		$swclient = SWClient::find($request->id);
-		if(!$swclient) return response()->json(['ok' => 'false', 'error' => 'ServiceWorkerClient not found'], 404);
+		if(!$swclient) return $this->notFound(['ok' => 'false', 'error' => 'ServiceWorkerClient not found']);
 		$swclient->delete();
-		return response()->json(['ok' => $swclient ? 'false' : 'true'], 200);
+		return $this->success(['ok' => $swclient ? 'false' : 'true']);
+	}
+
+	public function receiveClientToken(Request $request)
+	{
+		if ($request->has('token')) {
+			$userToken = $this->model->fcm()->first()->token;
+			if ($userToken != $request->input('token')) {
+				return $this->success($this->model->fcm()->create($request->all()));
+			}
+		}
+		return $this->noContent();
 	}
 }

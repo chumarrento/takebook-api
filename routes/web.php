@@ -36,6 +36,9 @@ $router->get('users/{id}', 'User\\UserController@getUser');
 $router->put('users/{id}', 'User\\UserController@putUser');
 $router->delete('users/{id}', 'User\\UserController@destroy');
 
+$router->post('users/mobile-token', 'Notification\\ServiceWorkerController@receiveClientToken');
+
+
 $router->get('categories', 'Category\\CategoryController@getCategories');
 $router->post('categories', 'Category\\CategoryController@postCategory');
 $router->get('categories/{id}', 'Category\\CategoryController@getCategory');
@@ -70,3 +73,4 @@ $router->post('sw/subscriptions', 'Notification\\ServiceWorkerController@subscri
 $router->delete('sw/subscriptions/{id}', 'Notification\\ServiceWorkerController@unsubscribeClient');
 
 $router->put('notification/{user_id}/{notification_id}', 'Notification\\NotificationController@subscribeClient');
+

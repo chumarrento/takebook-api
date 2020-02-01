@@ -62,7 +62,7 @@ class Book extends Model
 
     public function notification()
 	{
-		return $this->hasMany(Notification::class, 'book_id');
+		return $this->hasMany(Notification::class, 'book_id', 'id');
 	}
 
     public function getCategoriesAttribute()

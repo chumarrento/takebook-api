@@ -19,10 +19,11 @@ class CreateNotificationsTable extends Migration
 			$table->boolean('opened')->default(false);
 			$table->bigInteger('book_id')->unsigned();
 			$table->bigInteger('user_id')->unsigned();
-			$table->foreign('user_id')->references('id')->on('users');
-			$table->foreign('book_id')->references('id')->on('books');
-            $table->timestamps();
-        });
+			$table->timestamps();
+
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+		});
     }
 
     /**
