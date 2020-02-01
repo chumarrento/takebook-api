@@ -30,7 +30,7 @@ class NotificationService
 		}
 	}
 
-	public function sendWebPushNotification(SWClient $serviceWorkerClient, Notification $notification)
+	public function sendWebPushNotification(SWClient $serviceWorkerClient, $notification)
 	{
 		$subscription = Subscription::create([
 			'endpoint' => $serviceWorkerClient->endpoint,
@@ -39,17 +39,9 @@ class NotificationService
 				'auth' => $serviceWorkerClient->key_auth
 			],
 		]);
-		$book = $notification->book()->getResults();
-		$payload = json_encode([
-			'reason' => $notification->reason,
-			'book' => [
-				'title' => $book->title,
-				'author' => $book->author
-			],
-			'created_at' => $notification->created_at
-		]);
+
 		try {
-			$this->webPush->sendNotification($subscription, $payload);
+			$this->webPush->sendNotification($subscription, $notification);
 			/** @var MessageSentReport $report */
 			foreach ($this->webPush->flush() as $report) {
 				$endpoint = $report->getEndpoint();
