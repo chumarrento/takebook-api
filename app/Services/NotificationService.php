@@ -3,9 +3,7 @@
 
 namespace App\Services;
 
-use App\Entities\Notification;
 use App\Entities\SWClient;
-use App\Repositories\Notification\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 use Minishlink\WebPush\MessageSentReport;
 use Minishlink\WebPush\WebPush;
@@ -94,7 +92,7 @@ class NotificationService
 		$notificationBuilder->setBody($body)->setSound('default');
 
 		$dataBuilder = new PayloadDataBuilder();
-		$dataBuilder->addData(['a_data' => 'my_data']);
+		$dataBuilder->addData(['book' => $payload['book']]);
 
 		$option = $this->optionBuilder->build();
 		$notification = $notificationBuilder->build();

@@ -128,7 +128,7 @@ class BookController extends ApiController
 	 */
     public function getApprovedBooks()
 	{
-		$data = $this->model->where('status_id', Status::APPROVED)->paginate(9);
+		$data = $this->model->where('status_id', Status::APPROVED)->orderBy('approved_at', 'desc')->paginate(9);
 		return $this->success($data);
 	}
 
