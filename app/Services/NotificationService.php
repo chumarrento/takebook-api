@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entities\Notification;
 use App\Entities\SWClient;
+use App\Repositories\Notification\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 use Minishlink\WebPush\MessageSentReport;
 use Minishlink\WebPush\WebPush;
@@ -32,18 +33,9 @@ class NotificationService
 		try {
 			$this->webPush = new WebPush($this->auth);
 			$this->optionBuilder = new OptionsBuilder();
-			$this->optionBuilder->setTimeToLive(60*20);
+			$this->optionBuilder->setTimeToLive(60 * 20);
 		} catch (\ErrorException $e) {
 		}
-	}
-
-	public function createNotification($book)
-	{
-		Notification::create([
-			'reason' => 'BOOK_CREATED',
-			'book_id' => $book->id,
-			'user_id' => $book->user_id
-		]);
 	}
 
 	public function sendWebPushNotification(SWClient $serviceWorkerClient, $notification)
@@ -108,6 +100,7 @@ class NotificationService
 		$notification = $notificationBuilder->build();
 		$data = $dataBuilder->build();
 
+		//TODO tratar o retorno do fireloiros
 		$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 	}
 }

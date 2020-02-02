@@ -188,6 +188,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - books
@@ -260,6 +263,27 @@ paths:
         - books
       summary: 'Lista todos os livros que precisam ser validados'
       operationId: GetBooksToValidate
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/approved:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros aprovados'
+      operationId: GetApprovedBooks
+      responses:
+        '200':
+          description: ...
+  /books/refused:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros recusados'
+      operationId: GetRefusedBooks
       responses:
         '200':
           description: ...

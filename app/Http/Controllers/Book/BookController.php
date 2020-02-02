@@ -28,7 +28,7 @@ class BookController extends ApiController
         $this->model = $model;
         $this->repository = $repository;
         $this->middleware('auth:api', ['except' => ['getApprovedBooks', 'getHighlightsBooks']]);
-        $this->middleware('admin', ['only' => ['getBooksToValidate', 'status']]);
+        $this->middleware('admin', ['only' => ['getBooks', 'getBooksToValidate', 'status']]);
     }
 
     /**
@@ -37,6 +37,7 @@ class BookController extends ApiController
      *     summary="Lista todos os livros",
      *     operationId="GetBooks",
      *     tags={"books"},
+	 *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="title",
      *         in="query",
@@ -109,7 +110,7 @@ class BookController extends ApiController
      */
     public function getBooksToValidate()
     {
-        $data = $this->model->where('status_id', Status::ANALYZE);
+        $data = $this->model->where('status_id', Status::ANALYZE)->paginate(9);
         return $this->success($data);
     }
 
@@ -119,7 +120,6 @@ class BookController extends ApiController
 	 *     summary="Lista todos os livros aprovados",
 	 *     operationId="GetApprovedBooks",
 	 *     tags={"books"},
-	 *     security={{"apiToken":{}}},
 	 *     @OA\Response(
 	 *         response=200,
 	 *         description="...",
@@ -128,7 +128,7 @@ class BookController extends ApiController
 	 */
     public function getApprovedBooks()
 	{
-		$data = $this->model->where('status_id', Status::APPROVED);
+		$data = $this->model->where('status_id', Status::APPROVED)->paginate(9);
 		return $this->success($data);
 	}
 
@@ -147,7 +147,7 @@ class BookController extends ApiController
 	 */
 	public function getRefusedBooks()
 	{
-		$data = $this->model->where('status_id', Status::DISAPPROVED);
+		$data = $this->model->where('status_id', Status::DISAPPROVED)->paginate(9);
 		return $this->success($data);
 	}
 
