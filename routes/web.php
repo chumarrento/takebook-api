@@ -74,5 +74,4 @@ $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');
 $router->post('sw/subscriptions', 'Notification\\ServiceWorkerController@subscribeClient');
 $router->delete('sw/subscriptions/{id}', 'Notification\\ServiceWorkerController@unsubscribeClient');
 
-$router->put('notification/{notificationId}', 'Notification\\NotificationController@openNotification');
-
+$router->put('notifications/{notificationId}', 'Notification\\NotificationController@openNotification');

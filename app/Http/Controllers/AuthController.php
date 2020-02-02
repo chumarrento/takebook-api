@@ -64,7 +64,7 @@ class AuthController extends Controller
     public function loginPortal(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        $user = User::where([
+        $user = User::with('notifications.book')->where([
             ['email', $request->input('email')]
         ])->first();
 
@@ -122,7 +122,7 @@ class AuthController extends Controller
     public function loginAdmin(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        $user = User::where([
+        $user = User::with('notifications.book')->where([
             ['email', $request->input('email')],
             ['is_admin', 1]
         ])->first();
@@ -245,7 +245,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'token' => 'required'
         ]);
-        
+
         $token = DB::table('password_resets')->where([
             ['email', '=', $request->input('email')],
             ['token', '=', $request->input('token')],

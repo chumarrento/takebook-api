@@ -23,7 +23,7 @@ class NotificationController extends Controller
 	{
 		$notification = Notification::findOrFail($notificationId);
 
-		if ($notification->user_id == Auth::user()->getAuthIdentifier()) return $this->unauthorized();
+		if ($notification->user_id !== Auth::user()->getAuthIdentifier()) return $this->unauthorized();
 
 		$notification->opened = true;
 		$notification->save();

@@ -44,10 +44,13 @@ class ServiceWorkerController extends Controller
 	public function receiveClientToken(Request $request)
 	{
 		if ($request->has('token')) {
-			$userToken = $this->model->fcm()->first()->token;
-			if ($userToken != $request->input('token')) {
-				return $this->success($this->model->fcm()->create($request->all()));
+			$userTokens = $this->model->fcm();
+			foreach($userTokens as $userToken) {
+				if ($userToken->token == $request->input('token')) {
+					return $this->noContent();
+				}
 			}
+			return $this->success($this->model->fcm()->create($request->all()));
 		}
 		return $this->noContent();
 	}

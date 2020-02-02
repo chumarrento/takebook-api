@@ -3,18 +3,22 @@
 
 namespace App\Services;
 
-use App\Entities\Book\Book;
 use App\Entities\Notification;
 use App\Entities\SWClient;
 use Illuminate\Support\Facades\Log;
 use Minishlink\WebPush\MessageSentReport;
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
 
 class NotificationService
 {
 	protected $auth;
 	protected $webPush;
+	protected $optionBuilder;
 
 	public function __construct()
 	{
@@ -27,6 +31,8 @@ class NotificationService
 		];
 		try {
 			$this->webPush = new WebPush($this->auth);
+			$this->optionBuilder = new OptionsBuilder();
+			$this->optionBuilder->setTimeToLive(60*20);
 		} catch (\ErrorException $e) {
 		}
 	}
@@ -74,5 +80,34 @@ class NotificationService
 			}
 		} catch (\ErrorException $e) {
 		}
+	}
+
+	public function sendNotificationToDevice(string $token, $payload)
+	{
+		switch ($payload['reason']) {
+			case 'BOOK_ACCEPTED':
+				$title = 'Livro aceito!';
+				$body = 'Seu livro foi aceito e cadastrado no nosso banco de dados!';
+				break;
+			case 'BOOK_CREATED':
+				$title = 'Livro enviado para análise!';
+				$body = 'Um novo livro foi enviado para análise.';
+				break;
+			default:
+				$title = 'TESTE';
+				$body = 'Sei la';
+				break;
+		}
+		$notificationBuilder = new PayloadNotificationBuilder($title);
+		$notificationBuilder->setBody($body)->setSound('default');
+
+		$dataBuilder = new PayloadDataBuilder();
+		$dataBuilder->addData(['a_data' => 'my_data']);
+
+		$option = $this->optionBuilder->build();
+		$notification = $notificationBuilder->build();
+		$data = $dataBuilder->build();
+
+		$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 	}
 }
