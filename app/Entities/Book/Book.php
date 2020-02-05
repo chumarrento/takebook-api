@@ -90,7 +90,11 @@ class Book extends Model
         $data = [];
         foreach ($this->images()->getResults() as $image) {
             $url = env('APP_URL') .'/storage/' . $image->cover;
-            $data[] = ['url' => $url, 'image_id' => $image->id];
+            $data[] = [
+            	'url' => $url,
+				'order' => $image->order,
+				'image_id' => $image->id
+			];
         }
 
         return $data;

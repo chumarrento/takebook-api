@@ -16,6 +16,7 @@ class CreateBookImagesTable extends Migration
         Schema::create('book_images', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('cover');
+            $table->integer('order');
             $table->bigInteger('book_id')->unsigned();
             $table->timestamps();
 

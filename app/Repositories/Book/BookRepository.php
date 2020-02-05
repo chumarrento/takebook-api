@@ -26,13 +26,14 @@ class BookRepository extends Repository
 		$book = parent::create($data);
 
 		$this->sync($book->id, 'categories', $data['categories']);
-		foreach ($data['images'] as $image) {
+		foreach ($data['images'] as $key => $image) {
 			$fileName = "covers/" . Str::random(16) . "-cover." . $image->getClientOriginalExtension();
 
 			Storage::put($fileName, file_get_contents($image));
 
 			$book->images()->create([
-				'cover' => $fileName
+				'cover' => $fileName,
+				'order' => $key
 			]);
 		}
 		$this->setNotification($book);
