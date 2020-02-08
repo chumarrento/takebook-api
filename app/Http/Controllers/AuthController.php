@@ -135,6 +135,8 @@ class AuthController extends Controller
             return $this->unauthorized(['error' => 'Incorrect Password']);
         }
 
+        putenv('JWT_TTL=60');
+
         if (!$token = JWTAuth::attempt($credentials)) {
             return $this->unauthorized(['error' => 'Unauthorized']);
         }
