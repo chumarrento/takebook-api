@@ -7,6 +7,7 @@ use App\Entities\Auth\User;
 use App\Mail\ResetPasswordMail;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -134,8 +135,7 @@ class AuthController extends Controller
         if (!Hash::check($request->input('password'), $user->password)) {
             return $this->unauthorized(['error' => 'Incorrect Password']);
         }
-
-        putenv('JWT_TTL=60');
+        config(['jwt.ttl' => 60]);
 
         if (!$token = JWTAuth::attempt($credentials)) {
             return $this->unauthorized(['error' => 'Unauthorized']);
