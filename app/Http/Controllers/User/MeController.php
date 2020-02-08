@@ -42,7 +42,7 @@ class MeController extends ApiController
      */
     public function me()
     {
-        return $this->success($this->model);
+    	return $this->success($this->model::with('notifications.book')->where(['id' => $this->model->id])->first());
     }
 
     /**

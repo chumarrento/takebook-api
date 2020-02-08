@@ -188,6 +188,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - books
@@ -230,22 +233,20 @@ paths:
           schema:
             type: string
         -
-          name: categories
+          name: 'categories[0]'
           in: query
-          description: 'IDs das categorias'
+          description: 'ID de uma categoria'
           required: true
           schema:
-            type: array
-            items:
-              type: string
+            type: integer
       requestBody:
         content:
           multipart/form-data:
             schema:
               properties:
-                'images[1]':
+                'images[0]':
                   type: file
-                'images[2]':
+                'images[1]':
                   type: file
               type: object
       responses:
@@ -260,6 +261,27 @@ paths:
         - books
       summary: 'Lista todos os livros que precisam ser validados'
       operationId: GetBooksToValidate
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/approved:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros aprovados'
+      operationId: GetApprovedBooks
+      responses:
+        '200':
+          description: ...
+  /books/refused:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros recusados'
+      operationId: GetRefusedBooks
       responses:
         '200':
           description: ...

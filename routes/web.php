@@ -36,6 +36,9 @@ $router->get('users/{id}', 'User\\UserController@getUser');
 $router->put('users/{id}', 'User\\UserController@putUser');
 $router->delete('users/{id}', 'User\\UserController@destroy');
 
+$router->post('users/mobile-token', 'Notification\\ServiceWorkerController@receiveClientToken');
+
+
 $router->get('categories', 'Category\\CategoryController@getCategories');
 $router->post('categories', 'Category\\CategoryController@postCategory');
 $router->get('categories/{id}', 'Category\\CategoryController@getCategory');
@@ -46,6 +49,8 @@ $router->get('books', 'Book\\BookController@getBooks');
 $router->get('books/status', 'Book\\StatusController@getStatus');
 $router->get('books/conditions', 'Book\\ConditionController@getConditons');
 $router->get('books/validate', 'Book\\BookController@getBooksToValidate');
+$router->get('books/approved', 'Book\\BookController@getApprovedBooks');
+$router->get('books/refused', 'Book\\BookController@getRefusedBooks');
 $router->get('books/week', 'Book\\BookController@getWeeklyBooks');
 $router->get('books/highlights', 'Book\\BookController@getHighlightsBooks');
 $router->post('books', 'Book\\BookController@postBook');
@@ -65,3 +70,8 @@ $router->get('reports', 'Report\\ReportController@getReports');
 $router->get('reports/status', 'Report\\StatusController@getStatus');
 $router->put('reports/{id}', 'Report\\ReportController@putReport');
 $router->delete('reports/{id}', 'Report\\ReportController@deleteReport');
+
+$router->post('sw/subscriptions', 'Notification\\ServiceWorkerController@subscribeClient');
+$router->delete('sw/subscriptions/{id}', 'Notification\\ServiceWorkerController@unsubscribeClient');
+
+$router->put('notifications/{notificationId}', 'Notification\\NotificationController@openNotification');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookImagesTable extends Migration
+class CreateFcmClientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateBookImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('book_images', function (Blueprint $table) {
+        Schema::create('fcm_clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('cover');
-            $table->integer('order');
-            $table->bigInteger('book_id')->unsigned();
+            $table->longText('token');
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateBookImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_images');
+        Schema::dropIfExists('fcm_clients');
     }
 }
