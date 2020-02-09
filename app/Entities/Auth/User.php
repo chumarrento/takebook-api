@@ -6,6 +6,8 @@ use App\Entities\AccessLog;
 use App\Entities\Book\Book;
 use App\Entities\Chat\Message;
 use App\Entities\Chat\Room;
+use App\Entities\FCMClient;
+use App\Entities\Notification;
 use App\Entities\Report\Report;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -149,4 +151,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'user_id',
             'book_id')->withTimestamps();
     }
+
+	public function notifications()
+	{
+		return $this->hasMany(Notification::class, 'user_id', 'id')
+			->orderBy('created_at', 'desc');
+	}
+
+	public function fcm()
+	{
+		return $this->hasMany(FCMClient::class, 'user_id', 'id');
+	}
 }

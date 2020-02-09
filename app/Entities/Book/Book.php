@@ -6,6 +6,7 @@ namespace App\Entities\Book;
 
 use App\Entities\Auth\User;
 use App\Entities\Category\Category;
+use App\Entities\Notification;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -59,6 +60,11 @@ class Book extends Model
         return $this->belongsTo(Condition::class, 'condition_id', 'id');
     }
 
+    public function notification()
+	{
+		return $this->hasMany(Notification::class, 'book_id', 'id');
+	}
+
     public function getCategoriesAttribute()
     {
         $data = $this->categories()->getResults();
@@ -84,7 +90,11 @@ class Book extends Model
         $data = [];
         foreach ($this->images()->getResults() as $image) {
             $url = env('APP_URL') .'/storage/' . $image->cover;
-            $data[] = ['url' => $url, 'image_id' => $image->id];
+            $data[] = [
+            	'url' => $url,
+				'order' => $image->order,
+				'image_id' => $image->id
+			];
         }
 
         return $data;
