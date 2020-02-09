@@ -8,6 +8,8 @@ use App\Entities\Auth\User;
 use App\Repositories\Repository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserRepository extends Repository
 {
@@ -19,8 +21,14 @@ class UserRepository extends Repository
     public function create(array $data)
     {
         unset($data['is_admin']);
-
         $data['password'] = Hash::make($data['password']);
+
+        if (array_key_exists('avatar_file', $data)) {
+				$file = $data['avatar_file'];
+				$fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
+
+				Storage::put($fileName, file_get_contents($file));
+		}
         return parent::create($data);
     }
 

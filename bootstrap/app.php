@@ -109,8 +109,8 @@ $app->alias('mailer', Illuminate\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 
-class_alias(\LaravelFCM\Facades\FCM::class, 'FCM');
-class_alias(\LaravelFCM\Facades\FCMGroup::class, 'FCMGroup');
+//class_alias(\LaravelFCM\Facades\FCM::class, 'FCM');
+//class_alias(\LaravelFCM\Facades\FCMGroup::class, 'FCMGroup');
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

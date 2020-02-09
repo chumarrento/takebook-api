@@ -70,7 +70,7 @@ class AuthController extends Controller
         ])->first();
 
         if (!$user) {
-            return $this->unauthorized(['error' => 'User not found']);
+            return $this->notFound(['error' => 'User not found']);
         }
 
         if (!Hash::check($request->input('password'), $user->password)) {
