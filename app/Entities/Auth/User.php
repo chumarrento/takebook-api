@@ -51,7 +51,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'is_admin',
         'avatar'
     ];
-    protected $with = ['likes'];
     protected $appends = ['avatar_url'];
 
     public function getAvatarUrlAttribute()
