@@ -17,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
         ],
 		'App\Events\NewNotification' => [
 			'App\Listeners\NewNotificationListener',
+		],
+		'App\Events\NewChatMessage' => [
+			'App\Listeners\MessageChatListener',
 		]
     ];
 }
