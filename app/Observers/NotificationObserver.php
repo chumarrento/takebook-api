@@ -20,6 +20,7 @@ class NotificationObserver
 		$userFCMTokens = FCMClient::where('user_id', '=', $notification->user_id)->get();
 		$book = Book::find($notification->book_id);
 		$payload = [
+			'id' => $notification->id,
 			'reason' => $notification->reason,
 			'book' => $book,
 			'created_at' => $notification->created_at

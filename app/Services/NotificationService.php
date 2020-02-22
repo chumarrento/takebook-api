@@ -92,7 +92,7 @@ class NotificationService
 		$notificationBuilder->setBody($body)->setSound('default');
 
 		$dataBuilder = new PayloadDataBuilder();
-		$dataBuilder->addData(['book' => $payload['book']]);
+		$dataBuilder->addData(['book' => $payload['book'], 'id' => $payload['id']]);
 
 		$option = $this->optionBuilder->build();
 		$notification = $notificationBuilder->build();
