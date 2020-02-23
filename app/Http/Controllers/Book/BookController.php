@@ -110,7 +110,7 @@ class BookController extends ApiController
      */
     public function getBooksToValidate()
     {
-        $data = $this->model->where('status_id', Status::ANALYZE)->paginate(9);
+        $data = $this->model->where('status_id', Status::ANALYZE)->paginate(15);
         return $this->success($data);
     }
 
@@ -128,7 +128,7 @@ class BookController extends ApiController
 	 */
     public function getApprovedBooks()
 	{
-		$data = $this->model->where('status_id', Status::APPROVED)->orderBy('approved_at', 'desc')->paginate(9);
+		$data = $this->model->where('status_id', Status::APPROVED)->orderBy('approved_at', 'desc')->paginate(15);
 		return $this->success($data);
 	}
 
@@ -147,7 +147,7 @@ class BookController extends ApiController
 	 */
 	public function getRefusedBooks()
 	{
-		$data = $this->model->where('status_id', Status::DISAPPROVED)->paginate(9);
+		$data = $this->model->where('status_id', Status::DISAPPROVED)->paginate(15);
 		return $this->success($data);
 	}
 

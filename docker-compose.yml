@@ -7,6 +7,7 @@ services:
       - "./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf"
     ports:
       - "80:80"
+      - "8000:80"
     depends_on:
         - api
     networks:
@@ -36,7 +37,7 @@ services:
   redis:
     image: redis:alpine
     ports:
-      - "${REDIS_PORT}:6379"
+      - "${BROADCAST_REDIS_CONNECTION}:6379"
 
   composer:
     image: prooph/composer:7.3
