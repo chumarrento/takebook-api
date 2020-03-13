@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Chat;
 
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\Entities\Chat\Message;
 use App\Entities\Chat\Room;
 use App\Http\Controllers\Controller;

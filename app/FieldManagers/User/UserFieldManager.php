@@ -7,7 +7,6 @@ use App\FieldManagers\FieldManager;
 
 class UserFieldManager extends FieldManager
 {
-
     protected $fields = [
         'first_name' => [
             'rules' => 'string',
@@ -24,24 +23,33 @@ class UserFieldManager extends FieldManager
         'password' => [
             'rules' => 'string',
         ],
-        'address_street' => [
+		'address' => [
+			'rules' => 'array'
+		],
+        'address.street' => [
             'rules' => 'string',
         ],
-        'address_number' => [
+        'address.number' => [
+            'rules' => 'string|nullable',
+        ],
+        'address.neighborhood' => [
             'rules' => 'string',
         ],
-        'address_neighborhood' => [
+        'address.city' => [
             'rules' => 'string',
         ],
-        'address_city' => [
+        'address.state' => [
             'rules' => 'string',
         ],
-        'address_state' => [
+        'address.zip_code' => [
             'rules' => 'string',
         ],
-        'address_zip_code' => [
-            'rules' => 'string',
-        ],
+		'address.latitude' => [
+			'rules' => 'string|nullable',
+		],
+		'address.longitude' => [
+			'rules' => 'string|nullable',
+		],
         'is_admin' => [
             'rules' => 'boolean'
         ]
@@ -63,7 +71,7 @@ class UserFieldManager extends FieldManager
     {
         return [
             [
-                'field' => 'name',
+                'field' => 'first_name',
                 'type' => 'like'
 
             ],

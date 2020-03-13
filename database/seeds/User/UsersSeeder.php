@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 

@@ -3,7 +3,7 @@
 
 namespace App\Observers\Book;
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\Entities\Book\Book;
 use App\Entities\Notification;
 use App\Events\BookAccepted;

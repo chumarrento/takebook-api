@@ -4,11 +4,14 @@
 namespace App\Entities\Chat;
 
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'message',
         'user_id',

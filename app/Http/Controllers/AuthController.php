@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\AccessLog;
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\Mail\ResetPasswordMail;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;

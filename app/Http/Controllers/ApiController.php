@@ -51,7 +51,7 @@ class ApiController extends BaseController
     public function index(Request $request)
     {
         $query = $this->query ?: $this->repository->getModel();
-
+        
         foreach ($this->fieldManager->filters() as $filter) {
 
             if (!$request->has($filter['field'])) {
@@ -65,7 +65,7 @@ class ApiController extends BaseController
 
             if ($filter['type'] == 'like') {
                 $text = str_replace(' ', '%', $request->get($filter['field']));
-                $this->query = $this->query->whereRaw(
+                $query = $query->whereRaw(
                     $filter['field'] . ' like "%' . $text . '%"'
                 );
 

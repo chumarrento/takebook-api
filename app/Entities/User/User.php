@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Auth;
+namespace App\Entities\User;
 
 use App\Entities\AccessLog;
 use App\Entities\Book\Book;
@@ -9,6 +9,8 @@ use App\Entities\Chat\Room;
 use App\Entities\FCMClient;
 use App\Entities\Notification;
 use App\Entities\Report\Report;
+use App\Entities\User\Address\Address;
+use App\Enums\Book\Status;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,13 +36,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'avatar',
         'email',
         'password',
-        'address_street',
-        'address_number',
-        'address_neighborhood',
-        'address_city',
-        'address_state',
-        'address_zip_code',
-        'is_admin'
+        'is_admin',
+		'email_verified'
     ];
 
     /**
@@ -53,7 +50,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'is_admin',
         'avatar'
     ];
-    protected $appends = ['avatar_url'];
+    protected $appends = ['avatar_url', 'address', 'total_sales'];
 
     public function getAvatarUrlAttribute()
     {
@@ -161,5 +158,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	public function fcm()
 	{
 		return $this->hasMany(FCMClient::class, 'user_id', 'id');
+	}
+
+	public function address()
+	{
+		return $this->hasOne(Address::class, 'user_id', 'id');
+	}
+
+	public function getAddressAttribute()
+	{
+		return $this->address()->getResults();
+	}
+
+	public function getTotalSalesAttribute()
+	{
+		return $this->books()->where('status_id', '=', Status::ANALYZE)->count();
 	}
 }

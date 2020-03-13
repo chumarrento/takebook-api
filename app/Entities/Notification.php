@@ -2,7 +2,7 @@
 
 
 namespace App\Entities;
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\Entities\Book\Book;
 use Illuminate\Database\Eloquent\Model;
 

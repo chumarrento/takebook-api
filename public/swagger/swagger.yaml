@@ -798,44 +798,58 @@ paths:
           schema:
             type: string
         -
-          name: address_street
+          name: 'address[street]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_number
+          name: 'address[number]'
           in: query
           description: 'Numero da casa do rapaz'
           required: false
           schema:
             type: string
         -
-          name: address_neighborhood
+          name: 'address[neighborhood]'
           in: query
           description: 'Bairro onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_city
+          name: 'address[city]'
           in: query
           description: 'Cidade onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_state
+          name: 'address[state]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_zip_code
+          name: 'address[zip_code]'
           in: query
           description: 'CEP do cidadão'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[latitude]'
+          in: query
+          description: 'Latitude do endereço'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[longitude]'
+          in: query
+          description: 'Longitude do endereço'
           required: false
           schema:
             type: string
@@ -1038,17 +1052,21 @@ paths:
                   type: string
                 avatar_file:
                   type: file
-                address_street:
+                'address[street]':
                   type: string
-                address_number:
+                'address[number]':
                   type: string
-                address_neighborhood:
+                'address[neighborhood]':
                   type: string
-                address_city:
+                'address[city]':
                   type: string
-                address_state:
+                'address[state]':
                   type: string
-                address_zip_code:
+                'address[zip_code]':
+                  type: string
+                'address[latitude]':
+                  type: string
+                'address[longitude]':
                   type: string
               type: object
       responses:
@@ -1102,37 +1120,51 @@ paths:
           schema:
             type: string
         -
-          name: address_street
+          name: 'address[street]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_number
+          name: 'address[number]'
           in: query
           description: 'Numero da casa do rapaz'
           required: false
           schema:
             type: string
         -
-          name: address_city
+          name: 'address[city]'
           in: query
           description: 'Cidade onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_state
+          name: 'address[state]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_zip_code
+          name: 'address[zip_code]'
           in: query
           description: 'CEP onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[latitude]'
+          in: query
+          description: 'Latitude do endereço'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[longitude]'
+          in: query
+          description: 'Longitude do endereço'
           required: false
           schema:
             type: string

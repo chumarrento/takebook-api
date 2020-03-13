@@ -17,9 +17,10 @@ class CreateRoomsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('advertiser_id')->unsigned();
             $table->bigInteger('buyer_id')->unsigned();
-            $table->timestamps();
+			$table->timestamps();
+			$table->softDeletes();
 
-            $table->foreign('advertiser_id')->references('id')->on('users');
+			$table->foreign('advertiser_id')->references('id')->on('users');
             $table->foreign('buyer_id')->references('id')->on('users');
         });
     }
