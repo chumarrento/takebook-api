@@ -1050,6 +1050,9 @@ paths:
                   type: string
                 password:
                   type: string
+                is_admin:
+                  type: number
+                  enum: [0, 1]
                 avatar_file:
                   type: file
                 'address[street]':
@@ -1172,13 +1175,6 @@ paths:
           name: email
           in: query
           description: 'E-mail do cidadão'
-          required: false
-          schema:
-            type: string
-        -
-          name: password
-          in: query
-          description: 'Senha do cidadão'
           required: false
           schema:
             type: string

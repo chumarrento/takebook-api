@@ -115,6 +115,11 @@ class UserController extends ApiController
      *                     property="password",
      *                     type="string"
      *                 ),
+	 *     			   @OA\Property(
+	 *                     property="is_admin",
+	 *                     type="number",
+	 *                     enum={0, 1},
+	 *                 ),
      *                 @OA\Property(
      *                     property="avatar_file",
      *                     type="file"
@@ -276,15 +281,6 @@ class UserController extends ApiController
      *         name="email",
      *         in="query",
      *         description="E-mail do cidadão",
-     *         required=false,
-     *        @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="password",
-     *         in="query",
-     *         description="Senha do cidadão",
      *         required=false,
      *        @OA\Schema(
      *           type="string"

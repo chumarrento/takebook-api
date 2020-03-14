@@ -18,7 +18,9 @@ class UserRepository extends Repository
 
     public function create(array $data)
     {
-        unset($data['is_admin']);
+    	if (!Auth::check() && !Auth::user()->is_admin) {
+			unset($data['is_admin']);
+		}
 
         $data['password'] = Hash::make($data['password']);
         $user = parent::create($data);
@@ -32,10 +34,12 @@ class UserRepository extends Repository
 
     public function update(array $data, $id)
     {
-        unset($data['password']);
-        unset($data['is_admin']);
+		if (!Auth::check() && !Auth::user()->is_admin) {
+			unset($data['is_admin']);
+		}
+		unset($data['password']);
 
-        $user = parent::update($data, $id);
+		$user = parent::update($data, $id);
 
 		if (array_key_exists('address', $data)) {
 			if ($user->address) {
