@@ -986,6 +986,26 @@ paths:
       security:
         -
           apiToken: []
+  /users/me/books:
+    get:
+      tags:
+        - users
+      summary: 'Todos os livros cadastrados pelo usuário'
+      operationId: UserBooks
+      parameters:
+        -
+          name: statusId
+          in: query
+          description: 'ID do status do livro'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users:
     get:
       tags:

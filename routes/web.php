@@ -26,6 +26,7 @@ $router->get('users/me', 'User\\MeController@me');
 $router->put('users/me', 'User\\MeController@putMe');
 $router->post('users/me/avatar', 'User\\MeController@updateAvatar');
 $router->put('users/me/reset', 'User\\MeController@changePassword');
+$router->get('users/me/books', 'User\\MeController@books');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
 $router->post('users/me/reports/{reportedId}', 'User\\MeController@report');

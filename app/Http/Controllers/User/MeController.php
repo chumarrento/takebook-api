@@ -379,4 +379,36 @@ class MeController extends ApiController
 
         return $this->noContent();
     }
+
+	/**
+	 * @OA\Get(
+	 *     path="/users/me/books",
+	 *     summary="Todos os livros cadastrados pelo usuário",
+	 *     operationId="UserBooks",
+	 *     tags={"users"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Parameter(
+	 *         name="statusId",
+	 *         in="query",
+	 *         description="ID do status do livro",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *           type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+    public function books(Request $request)
+	{
+		if ($request->has('statusId')) {
+			$books = $this->model->books->where('status_id', $request->input('statusId'));
+			return $this->success($books);
+		}
+
+		return $this->success($this->model->books);
+	}
 }
