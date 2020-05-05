@@ -16,7 +16,12 @@ class ChatController extends Controller
 {
     use ApiResponse;
 
-    /**
+    public function __construct()
+	{
+		$this->middleware('auth:api');
+	}
+
+	/**
      * @OA\Get(
      *     path="/rooms",
      *     summary="Lista todos os chats do usuário autenticado",
@@ -34,7 +39,21 @@ class ChatController extends Controller
         $rooms = Room::where('buyer_id', '=', Auth::user()->getAuthIdentifier())
             ->orWhere('advertiser_id', '=', Auth::user()->getAuthIdentifier())->get();
 
-        return $this->success($rooms);
+        $newRooms = [];
+        foreach ($rooms as $room) {
+        	$userId = $room->buyer_id != Auth::user()->id ? $room->buyer_id : $room->advertiser_id;
+        	$user = User::where('id', $userId)->get(['first_name', 'last_name']);
+
+        	$message = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')->first();
+
+        	$newRooms[] = [
+        		'room_id' => $room->id,
+        		'user' => $user,
+				'message' => $message
+			];
+		}
+
+        return $this->success($newRooms);
     }
 
     /**
@@ -43,6 +62,7 @@ class ChatController extends Controller
      *     summary="Lista todas as mensagens de um chat",
      *     operationId="GetMessages",
      *     tags={"chat"},
+	 *     security={{"apiToken":{}}},
      *     @OA\Parameter(
      *         name="room_id",
      *         in="path",
@@ -66,8 +86,8 @@ class ChatController extends Controller
     /**
      * @OA\Post(
      *     path="/rooms/{advertiserId}/w/{buyerId}",
-     *     summary="Cria uma mensagem em um chat",
-     *     operationId="PostMessage",
+     *     summary="Cria um chat e uma mensagem em um chat",
+     *     operationId="PostChat",
      *     tags={"chat"},
      *     security={{"apiToken":{}}},
      *     @OA\Parameter(
@@ -103,7 +123,7 @@ class ChatController extends Controller
      *     ),
      *  )
      */
-    public function storeMessage(Request $request, int $advertiserId, int $buyerId)
+    public function postChatAndMessage(Request $request, int $advertiserId, int $buyerId)
     {
         $request->merge(['advertiser_id' => $advertiserId, 'buyer_id' => $buyerId]);
         $this->validate($request, [
@@ -131,4 +151,54 @@ class ChatController extends Controller
         $message['user_id'] = Auth::user()->getAuthIdentifier();
         return $this->success(Message::create($message));
     }
+
+
+	/**
+	 * @OA\Post(
+	 *     path="/rooms/{roomId}/messages",
+	 *     summary="Cria uma mensagem em um chat",
+	 *     operationId="PostMessage",
+	 *     tags={"chat"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Parameter(
+	 *         name="roomId",
+	 *         in="path",
+	 *         description="ID do chat",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *           type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         name="message",
+	 *         in="query",
+	 *         description="Mensagem",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *           type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+    public function sendMessage(Request $request, int $roomId)
+	{
+		$this->validate($request, [
+			'message' => 'string'
+		]);
+
+		$room = Room::findOrFail($roomId);
+
+		$message = [
+			'message' => $request->input('message'),
+			'user_id' => Auth::user()->id
+		];
+
+		$message = $room->messages()->create($message);
+
+		return $this->created($message);
+	}
 }

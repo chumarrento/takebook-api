@@ -661,12 +661,15 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
   '/rooms/{advertiserId}/w/{buyerId}':
     post:
       tags:
         - chat
-      summary: 'Cria uma mensagem em um chat'
-      operationId: PostMessage
+      summary: 'Cria um chat e uma mensagem em um chat'
+      operationId: PostChat
       parameters:
         -
           name: advertiserId
@@ -679,6 +682,33 @@ paths:
           name: buyerId
           in: path
           description: 'ID do comprador'
+          required: true
+          schema:
+            type: integer
+        -
+          name: message
+          in: query
+          description: Mensagem
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/rooms/{roomId}/messages':
+    post:
+      tags:
+        - chat
+      summary: 'Cria uma mensagem em um chat'
+      operationId: PostMessage
+      parameters:
+        -
+          name: roomId
+          in: path
+          description: 'ID do chat'
           required: true
           schema:
             type: integer
