@@ -53,5 +53,4 @@ services:
       - ~/.composer:/tmp:cached
 networks:
   takebook-network:
-    external:
-      name: takebook-administrativo_takebook-network
+    driver: bridge
