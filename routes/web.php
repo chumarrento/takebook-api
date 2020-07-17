@@ -14,10 +14,7 @@
 $router->get('/', function () use ($router) {
     return 'Servidor Online!';
 });
-$router->get('/teste', function () {
-	$faker = new Faker\Provider\Person((new \Faker\Generator()));
-	return $faker->firstName('male');
-});
+
 $router->post('auth/login', 'AuthController@loginPortal');
 $router->post('admin/auth/login', 'AuthController@loginAdmin');
 $router->post('auth/refresh', 'AuthController@refresh');

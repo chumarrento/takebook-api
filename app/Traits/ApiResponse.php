@@ -47,7 +47,7 @@ trait ApiResponse
     }
 
     /**
-     * Return HTTP Created (204)
+     * Return HTTP No Content (204)
      *
      * @return \Illuminate\Http\JsonResponse
      */

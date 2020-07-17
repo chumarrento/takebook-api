@@ -1,9 +1,11 @@
 <?php
 
+namespace unit;
+
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use App\Entities\Auth\User;
 
-class AuthTest extends TestCase
+class AuthTest extends \TestCase
 {
 	use DatabaseTransactions;
 
@@ -52,7 +54,7 @@ class AuthTest extends TestCase
 	}
 
 	/** @test */
-	public function normalUserCanLoginInAdminEndpoint()
+	public function canUserWithoutBeingAdminLoginInAdminEndpoint()
 	{
 		$credentials = [
 			'email' => 'fulano132@email.com',
