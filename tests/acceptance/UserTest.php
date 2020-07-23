@@ -35,7 +35,7 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIFetchSpecificUserWithoutAuthentication()
 	{
-		$this->json('GET', '/users');
+		$this->json('GET', '/users/1');
 
 		$this->assertResponseStatus(401);
 	}
@@ -43,18 +43,10 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIFetchUsersLoggedInWithoutBeingAdmin()
 	{
-		$user = factory(User::class)->create();
-
-		$credentials = [
-			'email' => $user->email,
-			'password' => 'secret'
-		];
-
-		$result = $this->json('POST', '/auth/login', $credentials);
-		$responseData = json_decode($result->response->getContent(), true);
+		$login = $this->userLogin();
 
 		$this->json('GET', '/users', [], [
-			'Authorization' => "Bearer " . $responseData['token']
+			'Authorization' => "Bearer " . $login['token']
 		]);
 
 		$this->assertResponseStatus(401);
@@ -63,18 +55,10 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIFetchUsersBeingAdmin()
 	{
-		$user = factory(User::class)->create(['is_admin' => true]);
-
-		$credentials = [
-			'email' => $user->email,
-			'password' => 'secret'
-		];
-
-		$result = $this->json('POST', '/auth/login', $credentials);
-		$responseData = json_decode($result->response->getContent(), true);
+		$login = $this->adminLogin();
 
 		$this->json('GET', '/users', [], [
-			'Authorization' => "Bearer " . $responseData['token']
+			'Authorization' => "Bearer " . $login['token']
 		]);
 
 		$this->seeJsonContains(['current_page' => 1])
@@ -84,20 +68,11 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIFetchSpecificUserBeingAdmin()
 	{
-		$userAdmin = factory(User::class)->create(['is_admin' => true]);
+		$login = $this->adminLogin();
 		$user = factory(User::class)->create();
 
-
-		$credentials = [
-			'email' => $userAdmin->email,
-			'password' => 'secret'
-		];
-
-		$result = $this->json('POST', '/auth/login', $credentials);
-		$responseData = json_decode($result->response->getContent(), true);
-
 		$this->json('GET', "/users/$user->id", [], [
-			'Authorization' => "Bearer " . $responseData['token']
+			'Authorization' => "Bearer " . $login['token']
 		]);
 
 		$this->seeJsonContains(['id' => $user->id])
@@ -107,12 +82,12 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIUpdateMyLastName()
 	{
-		$user = factory(User::class)->create();
-
-		$this->actingAs($user);
+		$login = $this->userLogin();
 
 		$this->json('PUT', '/users/me', [
 			'last_name' => 'da Silva'
+		],[
+			'Authorization' => 'Bearer ' . $login['token']
 		]);
 
 
@@ -123,19 +98,11 @@ class UserTest extends \TestCase
 	/** @test */
 	public function canIDeleteSpecificUserBeingAdmin()
 	{
-		$userAdmin = factory(User::class)->create(['is_admin' => true]);
+		$login = $this->adminLogin();
 		$user = factory(User::class)->create();
 
-		$credentials = [
-			'email' => $userAdmin->email,
-			'password' => 'secret'
-		];
-
-		$result = $this->json('POST', '/auth/login', $credentials);
-		$responseData = json_decode($result->response->getContent(), true);
-
-		$a = $this->delete( "/users/$user->id", [], [
-			'Authorization' => "Bearer " . $responseData['token']
+		$this->delete( "/users/$user->id", [], [
+			'Authorization' => "Bearer " . $login['token']
 		]);
 
 		$this->assertResponseStatus(204);
