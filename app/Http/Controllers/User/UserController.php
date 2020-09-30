@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lucas
@@ -15,8 +16,6 @@ use App\Http\Controllers\ApiController;
 use App\Repositories\User\UserRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -115,11 +114,11 @@ class UserController extends ApiController
      *                     property="password",
      *                     type="string"
      *                 ),
-	 *     			   @OA\Property(
-	 *                     property="is_admin",
-	 *                     type="number",
-	 *                     enum={0, 1},
-	 *                 ),
+     *     			   @OA\Property(
+     *                     property="is_admin",
+     *                     type="number",
+     *                     enum={0, 1},
+     *                 ),
      *                 @OA\Property(
      *                     property="avatar_file",
      *                     type="file"
@@ -148,14 +147,14 @@ class UserController extends ApiController
      *                     property="address[zip_code]",
      *                     type="string"
      *                 ),
-	 *     			   @OA\Property(
-	 *                     property="address[latitude]",
-	 *                     type="string"
-	 *                 ),
-	 *     			   @OA\Property(
-	 *                     property="address[longitude]",
-	 *                     type="string"
-	 *                 ),
+     *     			   @OA\Property(
+     *                     property="address[latitude]",
+     *                     type="string"
+     *                 ),
+     *     			   @OA\Property(
+     *                     property="address[longitude]",
+     *                     type="string"
+     *                 ),
      *             )
      *         )
      *     ),
@@ -167,16 +166,20 @@ class UserController extends ApiController
      */
     public function postUser(Request $request)
     {
-        if ($request->has('avatar_file')) {
-            $file = $request->file('avatar_file');
-            $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
+        try {
+            if ($request->has('avatar_file')) {
+                $file = $request->file('avatar_file');
+                $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
 
-            Storage::put($fileName, file_get_contents($file));
+                Storage::put($fileName, file_get_contents($file));
 
-            $request->merge(['avatar' => $fileName]);
+                $request->merge(['avatar' => $fileName]);
+            }
+
+            return parent::store($request);
+        } catch (\Exception $e) {
+            abort(422);
         }
-
-        return parent::store($request);
     }
 
     /**
@@ -259,24 +262,24 @@ class UserController extends ApiController
      *           type="string"
      *         )
      *     ),
-	 *     @OA\Parameter(
-	 *         name="address[latitude]",
-	 *         in="query",
-	 *         description="Latitude do endereço",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *           type="string"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         name="address[longitude]",
-	 *         in="query",
-	 *         description="Longitude do endereço",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *           type="string"
-	 *         )
-	 *     ),
+     *     @OA\Parameter(
+     *         name="address[latitude]",
+     *         in="query",
+     *         description="Latitude do endereço",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="address[longitude]",
+     *         in="query",
+     *         description="Longitude do endereço",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
      *     @OA\Parameter(
      *         name="email",
      *         in="query",
