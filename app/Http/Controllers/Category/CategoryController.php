@@ -21,7 +21,7 @@ class CategoryController extends ApiController
         $this->fieldManager = $fieldManager;
         $this->model = $model;
         $this->repository = $repository;
-       $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['getCategories', 'getCategory']]);
         $this->middleware( 'admin', ['except' => ['getCategories', 'getCategory']]);
     }
 
