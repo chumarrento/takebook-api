@@ -51,7 +51,7 @@ class ApiController extends BaseController
     public function index(Request $request)
     {
         $query = $this->query ?: $this->repository->getModel();
-        
+
         foreach ($this->fieldManager->filters() as $filter) {
 
             if (!$request->has($filter['field'])) {
@@ -102,6 +102,9 @@ class ApiController extends BaseController
     {
         $this->validate($request, $this->fieldManager->store());
         $resource = $this->repository->create($request->all());
+        if (!$resource) {
+        	return $this->bad();
+		}
         return $this->created($resource);
     }
 
