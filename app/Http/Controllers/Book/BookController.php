@@ -128,7 +128,7 @@ class BookController extends ApiController
 	 */
     public function getApprovedBooks()
 	{
-    $query = $this->model->where('status_id', Status::APPROVED);
+    	$query = $this->model->where('status_id', Status::APPROVED);
 
         if (Auth::check() && !Auth::user()->is_admin) {
                 $query->where('user_id', '!=', Auth::user()->id);
