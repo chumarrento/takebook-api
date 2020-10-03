@@ -179,4 +179,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	{
 		return $this->books()->where('status_id', '=', Status::ANALYZE)->count();
 	}
+
+	public function hasRoomWith(User $user)
+	{
+		$room = Room::where('buyer_id', $user->id)
+			->orWhere('advertiser_id', $user->id)->first();
+
+		if (!$room) {
+			return false;
+		}
+		return $room;
+	}
 }

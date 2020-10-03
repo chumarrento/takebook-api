@@ -85,24 +85,15 @@ class ChatController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/rooms/{advertiserId}/w/{buyerId}",
+     *     path="/rooms",
      *     summary="Cria um chat e uma mensagem em um chat",
      *     operationId="PostChat",
      *     tags={"chat"},
      *     security={{"apiToken":{}}},
      *     @OA\Parameter(
-     *         name="advertiserId",
-     *         in="path",
-     *         description="ID do anunciante",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="integer"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="buyerId",
-     *         in="path",
-     *         description="ID do comprador",
+     *         name="target_id",
+     *         in="query",
+     *         description="ID do usuário ",
      *         required=true,
      *         @OA\Schema(
      *           type="integer"
@@ -123,32 +114,25 @@ class ChatController extends Controller
      *     ),
      *  )
      */
-    public function postChatAndMessage(Request $request, int $advertiserId, int $buyerId)
+    public function postChatAndMessage(Request $request)
     {
-        $request->merge(['advertiser_id' => $advertiserId, 'buyer_id' => $buyerId]);
         $this->validate($request, [
-            'advertiser_id' => 'required|exists:users,id',
-            'buyer_id' => 'required|exists:users,id',
+            'target_id' => 'required|exists:users,id',
             'message' => 'required|string'
         ]);
-
-        $room = Room::where([
-            ['buyer_id', '=', $buyerId],
-            ['advertiser_id', '=', $advertiserId]
-        ])->first();
+        $user = Auth::user();
+		$targetUser = User::find($request->input('target_id'));
+        $room = $user->hasRoomWith($targetUser);
+		
 
         if (!$room) {
-            User::find($advertiserId)->rooms()->attach($buyerId);
+			$user->rooms()->attach($targetUser);
 
-            $room = Room::where([
-                ['buyer_id', '=', $buyerId],
-                ['advertiser_id', '=', $advertiserId]
-            ])->first();
+			$room = $user->hasRoomWith($targetUser);
         }
-
         $message = $request->all();
         $message['room_id'] = $room->id;
-        $message['user_id'] = Auth::user()->getAuthIdentifier();
+        $message['user_id'] = $user->id;
         return $this->success(Message::create($message));
     }
 

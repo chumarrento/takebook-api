@@ -65,7 +65,7 @@ $router->delete('books/{bookId}/image/{imageId}', 'Book\\ImageController@deleteI
 
 $router->get('rooms', 'Chat\\ChatController@getRooms');
 $router->get('rooms/{roomId}/messages', 'Chat\\ChatController@getMessages');
-$router->post('rooms/{advertiserId}/w/{buyerId}', 'Chat\\ChatController@postChatAndMessage');
+$router->post('rooms', 'Chat\\ChatController@postChatAndMessage');
 $router->post('rooms/{roomId}/messages', 'Chat\\ChatController@sendMessage');
 
 $router->get('reports', 'Report\\ReportController@getReports');

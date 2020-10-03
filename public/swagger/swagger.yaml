@@ -644,6 +644,32 @@ paths:
       security:
         -
           apiToken: []
+    post:
+      tags:
+        - chat
+      summary: 'Cria um chat e uma mensagem em um chat'
+      operationId: PostChat
+      parameters:
+        -
+          name: target_id
+          in: query
+          description: 'ID do usuário '
+          required: true
+          schema:
+            type: integer
+        -
+          name: message
+          in: query
+          description: Mensagem
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   '/rooms/{room_id}/messages':
     get:
       tags:
@@ -658,40 +684,6 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        '200':
-          description: ...
-      security:
-        -
-          apiToken: []
-  '/rooms/{advertiserId}/w/{buyerId}':
-    post:
-      tags:
-        - chat
-      summary: 'Cria um chat e uma mensagem em um chat'
-      operationId: PostChat
-      parameters:
-        -
-          name: advertiserId
-          in: path
-          description: 'ID do anunciante'
-          required: true
-          schema:
-            type: integer
-        -
-          name: buyerId
-          in: path
-          description: 'ID do comprador'
-          required: true
-          schema:
-            type: integer
-        -
-          name: message
-          in: query
-          description: Mensagem
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: ...
