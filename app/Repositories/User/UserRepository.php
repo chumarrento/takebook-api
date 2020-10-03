@@ -27,7 +27,8 @@ class UserRepository extends Repository
 		DB::beginTransaction();
 		try {
 			$data['password'] = Hash::make($data['password']);
-			if ($file = $data['avatar_file']) {
+			if (array_key_exists('avatar_file', $data)) {
+				$file = $data['avatar_file'];
 				$fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
 				$data['avatar'] = $fileName;
 			}
@@ -38,7 +39,7 @@ class UserRepository extends Repository
 				$user->address()->create($data['address']);
 			}
 			DB::commit();
-			
+
 			if (array_key_exists('avatar', $data)) {
 				Storage::put($fileName, file_get_contents($file));
 			}
