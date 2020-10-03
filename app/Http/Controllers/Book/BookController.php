@@ -128,10 +128,13 @@ class BookController extends ApiController
 	 */
     public function getApprovedBooks()
 	{
-		$data = $this->model->where([
-			['status_id', Status::APPROVED],
-			Auth::check() ? ['user_id', '!=', Auth::user()->id] : []
-		])->orderBy('approved_at', 'desc')->paginate(15);
+    $query = $this->model->where('status_id', Status::APPROVED);
+
+        if (Auth::check() && !Auth::user()->is_admin) {
+                $query->where('user_id', '!=', Auth::user()->id);
+        }
+
+        $data = $query->orderBy('approved_at', 'desc')->paginate(15);
 
 		return $this->success($data);
 	}
