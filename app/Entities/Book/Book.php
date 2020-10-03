@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Book extends Model
 {
@@ -56,10 +57,12 @@ class Book extends Model
 
 	public function categories()
 	{
-		return $this->belongsToMany(Category::class,
+		return $this->belongsToMany(
+			Category::class,
 			'book_categories',
 			'book_id',
-			'category_id')->withTimestamps();
+			'category_id'
+		)->withTimestamps();
 	}
 
 	public function getCountLikesAttribute()
@@ -69,10 +72,12 @@ class Book extends Model
 
 	public function likes()
 	{
-		return $this->belongsToMany(User::class,
+		return $this->belongsToMany(
+			User::class,
 			'user_like_books',
 			'book_id',
-			'user_id')->withTimestamps();
+			'user_id'
+		)->withTimestamps();
 	}
 
 	public function getOwnerAttribute()
@@ -89,7 +94,7 @@ class Book extends Model
 	{
 		$data = [];
 		foreach ($this->images()->getResults() as $image) {
-			$url = env('APP_URL') . '/storage/' . $image->cover;
+			$url = Storage::url($image->cover);
 			$data[] = [
 				'url' => $url,
 				'order' => $image->order,
