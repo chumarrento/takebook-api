@@ -11,6 +11,6 @@ class MessageObserver
 {
 	public function created(Message $message)
 	{
-	   event(new NewChatMessage($message, $message->room_id));
+	   event(new NewChatMessage($message));
 	}
 }
