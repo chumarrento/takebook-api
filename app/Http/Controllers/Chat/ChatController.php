@@ -84,7 +84,8 @@ class ChatController extends Controller
      */
     public function getMessages(int $room_id)
     {
-        return $this->success(Message::where('room_id', '=', $room_id)->get());
+    	$messages = Message::where('room_id', '=', $room_id)->orderBy('created_at', 'desc')->get();
+        return $this->success($messages);
     }
 
     /**
