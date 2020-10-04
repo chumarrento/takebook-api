@@ -21,8 +21,6 @@ class EventServiceProvider extends ServiceProvider
 		'App\Events\NewChatMessage' => [
 			'App\Listeners\MessageChatListener',
 		],
-		'App\Events\NewChatRoom' => [
-			
-		],
+		'App\Events\NewChatRoom' => [],
     ];
 }

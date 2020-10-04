@@ -11,6 +11,6 @@ class RoomObserver
 {
 	public function created(Room $room)
 	{
-		event(new NewChatRoom($room));
+//		event(new NewChatRoom($room));
 	}
 }

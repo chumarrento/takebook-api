@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Chat;
 use App\Entities\User\User;
 use App\Entities\Chat\Message;
 use App\Entities\Chat\Room;
+use App\Events\NewChatRoom;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -123,7 +124,7 @@ class ChatController extends Controller
         $user = Auth::user();
 		$targetUser = User::find($request->input('target_id'));
         $room = $user->hasRoomWith($targetUser);
-		
+
 
         if (!$room) {
 			$user->rooms()->attach($targetUser);
@@ -133,7 +134,12 @@ class ChatController extends Controller
         $message = $request->all();
         $message['room_id'] = $room->id;
         $message['user_id'] = $user->id;
-        return $this->success(Message::create($message));
+        $message = Message::create($message);
+		$room = $user->hasRoomWith($targetUser);
+
+		event(new NewChatRoom($room));
+
+		return $this->created($message);
     }
 
 

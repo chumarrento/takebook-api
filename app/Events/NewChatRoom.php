@@ -21,6 +21,8 @@ class NewChatRoom implements ShouldBroadcast
 
 	public function __construct(Room $room)
 	{
+		$room->load('messages');
+
 		$this->room = $room;
 
 		$this->advertiserChannel = $room->advertiser_id;
