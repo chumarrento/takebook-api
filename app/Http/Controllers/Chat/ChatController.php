@@ -46,14 +46,14 @@ class ChatController extends Controller
         	$user = User::where('id', $userId)->get(['first_name', 'last_name'])
 				->makeHidden(['address', 'total_sales']);
 
-        	$message = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')
+        	$messages = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')
 				->limit(15)
 				->get();
 
         	$newRooms[] = [
         		'room_id' => $room->id,
         		'user' => $user,
-				'message' => $message
+				'messages' => $messages
 			];
 		}
 
