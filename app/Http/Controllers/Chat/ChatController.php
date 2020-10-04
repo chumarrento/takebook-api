@@ -43,9 +43,12 @@ class ChatController extends Controller
         $newRooms = [];
         foreach ($rooms as $room) {
         	$userId = $room->buyer_id != Auth::user()->id ? $room->buyer_id : $room->advertiser_id;
-        	$user = User::where('id', $userId)->get(['first_name', 'last_name']);
+        	$user = User::where('id', $userId)->get(['first_name', 'last_name'])
+				->makeHidden(['address', 'total_sales']);
 
-        	$message = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')->first();
+        	$message = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')
+				->limit(15)
+				->get();
 
         	$newRooms[] = [
         		'room_id' => $room->id,
