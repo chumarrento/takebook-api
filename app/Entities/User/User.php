@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		'is_admin',
 		'avatar'
 	];
-	protected $appends = ['avatar_url', 'address', 'total_sales'];
+	protected $appends = ['full_name', 'avatar_url', 'address', 'total_sales'];
 
 	public function getAvatarUrlAttribute()
 	{
@@ -178,6 +178,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	public function getTotalSalesAttribute()
 	{
 		return $this->books()->where('status_id', '=', Status::ANALYZE)->count();
+	}
+
+	public function getFullNameAttribute()
+	{
+		return "{$this->first_name} {$this->last_name}";
 	}
 
 	public function hasRoomWith(User $user)
