@@ -42,19 +42,7 @@ class ChatController extends Controller
 
         $newRooms = [];
         foreach ($rooms as $room) {
-        	$userId = $room->buyer_id != Auth::user()->id ? $room->buyer_id : $room->advertiser_id;
-        	$user = User::where('id', $userId)->first(['id', 'first_name', 'last_name'])
-				->makeHidden(['address', 'total_sales']);
-
-        	$messages = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')
-				->limit(15)
-				->get();
-
-        	$newRooms[] = [
-        		'room_id' => $room->id,
-        		'user' => $user,
-				'messages' => $messages
-			];
+        	$newRooms[] = $this->roomAttribute($room);
 		}
 
         return $this->success($newRooms);
@@ -128,22 +116,24 @@ class ChatController extends Controller
         $user = Auth::user();
 		$targetUser = User::find($request->input('target_id'));
         $room = $user->hasRoomWith($targetUser);
-
+		$createRoom = false;
 
         if (!$room) {
 			$user->rooms()->attach($targetUser);
-
+			$createRoom = true;
 			$room = $user->hasRoomWith($targetUser);
         }
         $message = $request->all();
         $message['room_id'] = $room->id;
         $message['user_id'] = $user->id;
-        $message = Message::create($message);
+        Message::create($message);
 		$room = $user->hasRoomWith($targetUser);
 
-		event(new NewChatRoom($room));
-
-		return $this->created($message);
+		if ($createRoom) {
+			event(new NewChatRoom($room));
+		}
+		$data = $this->roomAttribute($room);
+		return $this->created($data);
     }
 
 
@@ -194,5 +184,22 @@ class ChatController extends Controller
 		$message = $room->messages()->create($message);
 
 		return $this->created($message);
+	}
+
+	private function roomAttribute(Room $room)
+	{
+		$userId = $room->buyer_id != Auth::user()->id ? $room->buyer_id : $room->advertiser_id;
+		$user = User::where('id', $userId)->first(['id', 'first_name', 'last_name'])
+			->makeHidden(['address', 'total_sales']);
+
+		$messages = Message::where('room_id', $room->id)->orderBy('created_at', 'desc')
+			->limit(15)
+			->get();
+
+		return [
+			'room_id' => $room->id,
+			'user' => $user,
+			'messages' => $messages
+		];
 	}
 }
