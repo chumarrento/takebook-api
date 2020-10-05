@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\Entities\Book\Book;
 use App\FieldManagers\User\UserFieldManager;
 use App\Http\Controllers\ApiController;
@@ -42,7 +42,7 @@ class MeController extends ApiController
      */
     public function me()
     {
-        return $this->success($this->model);
+    	return $this->success($this->model::with('notifications.book')->where(['id' => $this->model->id])->first());
     }
 
     /**
@@ -72,7 +72,7 @@ class MeController extends ApiController
      *     ),
      *
      *     @OA\Parameter(
-     *         name="address_street",
+     *         name="address[street]",
      *         in="query",
      *         description="Rua onde o rapaz mora",
      *         required=false,
@@ -81,7 +81,7 @@ class MeController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_number",
+     *         name="address[number]",
      *         in="query",
      *         description="Numero da casa do rapaz",
      *         required=false,
@@ -90,7 +90,7 @@ class MeController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_neighborhood",
+     *         name="address[neighborhood]",
      *         in="query",
      *         description="Bairro onde o rapaz mora",
      *         required=false,
@@ -99,7 +99,7 @@ class MeController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_city",
+     *         name="address[city]",
      *         in="query",
      *         description="Cidade onde o rapaz mora",
      *         required=false,
@@ -108,7 +108,7 @@ class MeController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_state",
+     *         name="address[state]",
      *         in="query",
      *         description="Rua onde o rapaz mora",
      *         required=false,
@@ -117,7 +117,7 @@ class MeController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_zip_code",
+     *         name="address[zip_code]",
      *         in="query",
      *         description="CEP do cidadão",
      *         required=false,
@@ -125,6 +125,24 @@ class MeController extends ApiController
      *           type="string"
      *         )
      *     ),
+	 *     @OA\Parameter(
+	 *         name="address[latitude]",
+	 *         in="query",
+	 *         description="Latitude do endereço",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *           type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         name="address[longitude]",
+	 *         in="query",
+	 *         description="Longitude do endereço",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *           type="string"
+	 *         )
+	 *     ),
      *     @OA\Parameter(
      *         name="email",
      *         in="query",
@@ -361,4 +379,36 @@ class MeController extends ApiController
 
         return $this->noContent();
     }
+
+	/**
+	 * @OA\Get(
+	 *     path="/users/me/books",
+	 *     summary="Todos os livros cadastrados pelo usuário",
+	 *     operationId="UserBooks",
+	 *     tags={"users"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Parameter(
+	 *         name="statusId",
+	 *         in="query",
+	 *         description="ID do status do livro",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *           type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+    public function books(Request $request)
+	{
+		if ($request->has('statusId')) {
+			$books = $this->model->books->where('status_id', $request->input('statusId'));
+			return $this->success($books);
+		}
+
+		return $this->success($this->model->books);
+	}
 }

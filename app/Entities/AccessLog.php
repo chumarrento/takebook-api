@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use Illuminate\Database\Eloquent\Model;
 
 

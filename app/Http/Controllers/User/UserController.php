@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lucas
@@ -9,14 +10,12 @@
 namespace App\Http\Controllers\User;
 
 
-use App\Entities\Auth\User;
+use App\Entities\User\User;
 use App\FieldManagers\User\UserFieldManager;
 use App\Http\Controllers\ApiController;
 use App\Repositories\User\UserRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -115,32 +114,45 @@ class UserController extends ApiController
      *                     property="password",
      *                     type="string"
      *                 ),
+     *     			   @OA\Property(
+     *                     property="is_admin",
+     *                     type="number",
+     *                     enum={0, 1},
+     *                 ),
      *                 @OA\Property(
      *                     property="avatar_file",
      *                     type="file"
      *                 ),
      *                 @OA\Property(
-     *                     property="address_street",
+     *                     property="address[street]",
      *                     type="string"
      *                 ),
      *                  @OA\Property(
-     *                     property="address_number",
+     *                     property="address[number]",
      *                     type="string"
      *                 ),
      *                 @OA\Property(
-     *                     property="address_neighborhood",
+     *                     property="address[neighborhood]",
      *                     type="string"
      *                 ),
      *                 @OA\Property(
-     *                     property="address_city",
+     *                     property="address[city]",
      *                     type="string"
      *                 ),
      *                 @OA\Property(
-     *                     property="address_state",
+     *                     property="address[state]",
      *                     type="string"
      *                 ),
      *                 @OA\Property(
-     *                     property="address_zip_code",
+     *                     property="address[zip_code]",
+     *                     type="string"
+     *                 ),
+     *     			   @OA\Property(
+     *                     property="address[latitude]",
+     *                     type="string"
+     *                 ),
+     *     			   @OA\Property(
+     *                     property="address[longitude]",
      *                     type="string"
      *                 ),
      *             )
@@ -154,16 +166,7 @@ class UserController extends ApiController
      */
     public function postUser(Request $request)
     {
-        if ($request->has('avatar_file')) {
-            $file = $request->file('avatar_file');
-            $fileName = "avatars/" . Str::random(16) . "-avatar." . $file->getClientOriginalExtension();
-
-            Storage::put($fileName, file_get_contents($file));
-
-            $request->merge(['avatar' => $fileName]);
-        }
-
-        return parent::store($request);
+		return parent::store($request);
     }
 
     /**
@@ -202,7 +205,7 @@ class UserController extends ApiController
      *     ),
      *
      *     @OA\Parameter(
-     *         name="address_street",
+     *         name="address[street]",
      *         in="query",
      *         description="Rua onde o rapaz mora",
      *         required=false,
@@ -211,7 +214,7 @@ class UserController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_number",
+     *         name="address[number]",
      *         in="query",
      *         description="Numero da casa do rapaz",
      *         required=false,
@@ -220,7 +223,7 @@ class UserController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_city",
+     *         name="address[city]",
      *         in="query",
      *         description="Cidade onde o rapaz mora",
      *         required=false,
@@ -229,7 +232,7 @@ class UserController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_state",
+     *         name="address[state]",
      *         in="query",
      *         description="Rua onde o rapaz mora",
      *         required=false,
@@ -238,9 +241,27 @@ class UserController extends ApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="address_zip_code",
+     *         name="address[zip_code]",
      *         in="query",
      *         description="CEP onde o rapaz mora",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="address[latitude]",
+     *         in="query",
+     *         description="Latitude do endereço",
+     *         required=false,
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="address[longitude]",
+     *         in="query",
+     *         description="Longitude do endereço",
      *         required=false,
      *         @OA\Schema(
      *           type="string"
@@ -250,15 +271,6 @@ class UserController extends ApiController
      *         name="email",
      *         in="query",
      *         description="E-mail do cidadão",
-     *         required=false,
-     *        @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="password",
-     *         in="query",
-     *         description="Senha do cidadão",
      *         required=false,
      *        @OA\Schema(
      *           type="string"

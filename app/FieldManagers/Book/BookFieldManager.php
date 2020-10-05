@@ -35,7 +35,13 @@ class BookFieldManager extends FieldManager
         ],
         'user_id' => [
             'rules' => 'integer|exists:users,id'
-        ]
+        ],
+		'categories.*' => [
+			'rules' => 'integer|exists:categories,id'
+		],
+		'images.*' => [
+			'rules' => 'image'
+		]
     ];
 
     public function store()

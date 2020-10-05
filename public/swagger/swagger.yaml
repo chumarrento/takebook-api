@@ -188,6 +188,9 @@ paths:
       responses:
         '200':
           description: ...
+      security:
+        -
+          apiToken: []
     post:
       tags:
         - books
@@ -230,22 +233,20 @@ paths:
           schema:
             type: string
         -
-          name: categories
+          name: 'categories[0]'
           in: query
-          description: 'IDs das categorias'
+          description: 'ID de uma categoria'
           required: true
           schema:
-            type: array
-            items:
-              type: string
+            type: integer
       requestBody:
         content:
           multipart/form-data:
             schema:
               properties:
-                'images[1]':
+                'images[0]':
                   type: file
-                'images[2]':
+                'images[1]':
                   type: file
               type: object
       responses:
@@ -260,6 +261,27 @@ paths:
         - books
       summary: 'Lista todos os livros que precisam ser validados'
       operationId: GetBooksToValidate
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  /books/approved:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros aprovados'
+      operationId: GetApprovedBooks
+      responses:
+        '200':
+          description: ...
+  /books/refused:
+    get:
+      tags:
+        - books
+      summary: 'Lista todos os livros recusados'
+      operationId: GetRefusedBooks
       responses:
         '200':
           description: ...
@@ -622,6 +644,32 @@ paths:
       security:
         -
           apiToken: []
+    post:
+      tags:
+        - chat
+      summary: 'Cria um chat e uma mensagem em um chat'
+      operationId: PostChat
+      parameters:
+        -
+          name: target_id
+          in: query
+          description: 'ID do usuário '
+          required: true
+          schema:
+            type: integer
+        -
+          name: message
+          in: query
+          description: Mensagem
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   '/rooms/{room_id}/messages':
     get:
       tags:
@@ -639,7 +687,10 @@ paths:
       responses:
         '200':
           description: ...
-  '/rooms/{advertiserId}/w/{buyerId}':
+      security:
+        -
+          apiToken: []
+  '/rooms/{roomId}/messages':
     post:
       tags:
         - chat
@@ -647,16 +698,9 @@ paths:
       operationId: PostMessage
       parameters:
         -
-          name: advertiserId
+          name: roomId
           in: path
-          description: 'ID do anunciante'
-          required: true
-          schema:
-            type: integer
-        -
-          name: buyerId
-          in: path
-          description: 'ID do comprador'
+          description: 'ID do chat'
           required: true
           schema:
             type: integer
@@ -776,44 +820,58 @@ paths:
           schema:
             type: string
         -
-          name: address_street
+          name: 'address[street]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_number
+          name: 'address[number]'
           in: query
           description: 'Numero da casa do rapaz'
           required: false
           schema:
             type: string
         -
-          name: address_neighborhood
+          name: 'address[neighborhood]'
           in: query
           description: 'Bairro onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_city
+          name: 'address[city]'
           in: query
           description: 'Cidade onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_state
+          name: 'address[state]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_zip_code
+          name: 'address[zip_code]'
           in: query
           description: 'CEP do cidadão'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[latitude]'
+          in: query
+          description: 'Latitude do endereço'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[longitude]'
+          in: query
+          description: 'Longitude do endereço'
           required: false
           schema:
             type: string
@@ -950,6 +1008,26 @@ paths:
       security:
         -
           apiToken: []
+  /users/me/books:
+    get:
+      tags:
+        - users
+      summary: 'Todos os livros cadastrados pelo usuário'
+      operationId: UserBooks
+      parameters:
+        -
+          name: statusId
+          in: query
+          description: 'ID do status do livro'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /users:
     get:
       tags:
@@ -1014,19 +1092,26 @@ paths:
                   type: string
                 password:
                   type: string
+                is_admin:
+                  type: number
+                  enum: [0, 1]
                 avatar_file:
                   type: file
-                address_street:
+                'address[street]':
                   type: string
-                address_number:
+                'address[number]':
                   type: string
-                address_neighborhood:
+                'address[neighborhood]':
                   type: string
-                address_city:
+                'address[city]':
                   type: string
-                address_state:
+                'address[state]':
                   type: string
-                address_zip_code:
+                'address[zip_code]':
+                  type: string
+                'address[latitude]':
+                  type: string
+                'address[longitude]':
                   type: string
               type: object
       responses:
@@ -1080,37 +1165,51 @@ paths:
           schema:
             type: string
         -
-          name: address_street
+          name: 'address[street]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_number
+          name: 'address[number]'
           in: query
           description: 'Numero da casa do rapaz'
           required: false
           schema:
             type: string
         -
-          name: address_city
+          name: 'address[city]'
           in: query
           description: 'Cidade onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_state
+          name: 'address[state]'
           in: query
           description: 'Rua onde o rapaz mora'
           required: false
           schema:
             type: string
         -
-          name: address_zip_code
+          name: 'address[zip_code]'
           in: query
           description: 'CEP onde o rapaz mora'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[latitude]'
+          in: query
+          description: 'Latitude do endereço'
+          required: false
+          schema:
+            type: string
+        -
+          name: 'address[longitude]'
+          in: query
+          description: 'Longitude do endereço'
           required: false
           schema:
             type: string
@@ -1118,13 +1217,6 @@ paths:
           name: email
           in: query
           description: 'E-mail do cidadão'
-          required: false
-          schema:
-            type: string
-        -
-          name: password
-          in: query
-          description: 'Senha do cidadão'
           required: false
           schema:
             type: string

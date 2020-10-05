@@ -10,7 +10,7 @@ class Image extends Model
 {
     protected $table = 'book_images';
 
-    protected $fillable = ['cover', 'book_id'];
+    protected $fillable = ['cover', 'order', 'book_id'];
 
     public function book()
     {
