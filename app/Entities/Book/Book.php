@@ -113,11 +113,11 @@ class Book extends Model
 	public function getViewerLikedAttribute()
 	{
 		if (Auth::check()) {
-			$usersLikes = $this->likes()->getResults();
+			$userLike = $this->likes()->where('user_id', Auth::user()->id)->first();
 
-			foreach ($usersLikes as $like) {
-				return $like->id == Auth::user()->id;
-			}
+			if ($userLike) {
+        return true;
+      }
 		}
 		return false;
 	}
