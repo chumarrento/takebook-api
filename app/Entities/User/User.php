@@ -9,8 +9,10 @@ use App\Entities\Chat\Room;
 use App\Entities\FCMClient;
 use App\Entities\Notification;
 use App\Entities\Report\Report;
+use App\Entities\SWClient;
 use App\Entities\User\Address\Address;
 use App\Enums\Book\Status;
+use App\Services\Notifications\SendGateway;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -160,6 +162,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 			->orderBy('created_at', 'desc');
 	}
 
+	public function swclients()
+	{
+		return $this->hasMany(SWClient::class, 'user_id', 'id');
+	}
+
 	public function fcm()
 	{
 		return $this->hasMany(FCMClient::class, 'user_id', 'id');
@@ -168,6 +175,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	public function address()
 	{
 		return $this->hasOne(Address::class, 'user_id', 'id');
+	}
+
+	public function getSWClientsAttribute()
+	{
+		return $this->swclients()->getResults();
+	}
+
+	public function getFCMClientsAttribute()
+	{
+		return $this->fcm()->getResults();
 	}
 
 	public function getAddressAttribute()
