@@ -44,6 +44,7 @@ class BookRepository extends Repository
 			return $book;
 		} catch (\Exception $exception) {
 			DB::rollBack();
+			dd($exception);
 			return false;
 		}
 	}
