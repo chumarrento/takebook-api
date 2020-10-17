@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\AccessLog;
 use App\Entities\User\User;
+use App\Jobs\SendMailJob;
 use App\Mail\ResetPasswordMail;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -206,9 +208,8 @@ class AuthController extends Controller
         $user = User::where('email', $request->input('email'))->firstOrFail();
         $token = $user->generateResetToken();
 
-        Mail::to($user)->send(new ResetPasswordMail(['user' => $user, 'token' => $token]));
-
-        return $this->success();
+		Queue::push(new SendMailJob($user, $token));
+        return $this->noContent();
     }
 
     /**
@@ -254,11 +255,11 @@ class AuthController extends Controller
             ['used', '=', 0]
         ])->first();
 
-        if ($token) {
-            return $this->success();
+        if (!$token) {
+			return $this->unprocessable(['error' => 'This token already used or not exists.']);
         }
-        return $this->unprocessable(['error' => 'This token already used or not exists.']);
-    }
+		return $this->noContent();
+	}
 
     /**
      * @OA\Post(
@@ -332,6 +333,6 @@ class AuthController extends Controller
         );
 
         DB::table('password_resets')->where('token', $request->input('token'))->update(['used' => 1]);
-        return $this->success();
+        return $this->noContent();
     }
 }
