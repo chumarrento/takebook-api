@@ -103,6 +103,9 @@ $app->configure('cors');
 //REDIS
 //$app->configure('database');
 
+//SWClient
+$app->configure('serviceworker');
+$app->configure('filesystems');
 //Mailable
 $app->configure('mail');
 $app->alias('mailer', Illuminate\Mail\Mailer::class);

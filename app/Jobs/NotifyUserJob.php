@@ -9,23 +9,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyUserJob implements ShouldQueue
+class NotifyUserJob extends Job implements ShouldQueue
 {
-	use InteractsWithQueue, Queueable, SerializesModels;
+	use SerializesModels, InteractsWithQueue, Queueable;
 	/**
 	 * @var User
 	 */
-	private $user;
+	public $user;
 
 	/**
 	 * @var SendGateway
 	 */
-	private $gateway;
+	public $gateway;
 
 	/**
 	 * @var array
 	 */
-	private $payload;
+	public $payload;
 
 	/**
 	 * NotifyUserJob constructor.
@@ -33,19 +33,30 @@ class NotifyUserJob implements ShouldQueue
 	 * @param User $user
 	 * @param array $payload
 	 */
-	public function __construct(SendGateway $gateway, User $user, array $payload)
+	public function __construct($gateway, User $user, array $payload)
 	{
 		$this->gateway = $gateway;
 		$this->user = $user;
 		$this->payload = $payload;
 	}
 
+	/**
+	 * Execute the job.
+	 *
+	 * @return void
+	 */
 	public function handle()
 	{
-		$this->gateway->send($this->user, $this->payload);
+
+		//TODO achar o erro do gateway
+//		try {
+//			$this->gateway->send($this->user, $this->payload);
+//		} catch (\Exception $exception) {
+//			$this->failed($exception);
+//		}
 	}
 
-	public function failed()
+	public function failed(\Exception $exception)
 	{
 		// TODO: Criar tabela de log.
 	}

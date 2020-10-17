@@ -32,9 +32,13 @@ class NotificationObserver
 			'created_at' => $notification->created_at
 		];
 
-		$gateways->each(function ($gateway) use ($payload, $user) {
-			dispatch(new NotifyUserJob(new $gateway, $user, $payload));
-		});
+		$gateway = app(SWService::class);
+		$job = new NotifyUserJob($gateway, $user, $payload);
+		dispatch($job);
+
+//		$gateways->each(function ($gateway) use ($payload, $user) {
+//			dispatch(new NotifyUserJob(new $gateway, $user, $payload));
+//		});
 
 		// TODO: Criar gateway para notificar via WebSocket.
 		event(new NewNotification($payload, 'userID'.$notification->user_id));
