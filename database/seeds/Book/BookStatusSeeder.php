@@ -22,7 +22,10 @@ class BookStatusSeeder extends Seeder
             ],
             [
                 'name' => 'Reprovada'
-            ]
+            ],
+			[
+				'name' => 'Vendido'
+			]
         ];
         DB::statement('SET foreign_key_checks=0');
 

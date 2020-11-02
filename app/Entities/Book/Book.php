@@ -90,6 +90,11 @@ class Book extends Model
 		return $this->belongsTo(User::class, 'user_id');
 	}
 
+	public function buyer()
+	{
+		return $this->hasOne(HasBuyer::class, 'book_id', 'id');
+	}
+
 	public function getCoversUrlAttribute()
 	{
 		$data = [];

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\User;
 
 use App\Entities\User\User;
 use App\Entities\Book\Book;
+use App\Enums\Book\Status;
 use App\FieldManagers\User\UserFieldManager;
 use App\Http\Controllers\ApiController;
 use App\Repositories\User\UserRepository;
 use App\Traits\ApiResponse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -410,5 +412,49 @@ class MeController extends ApiController
 		}
 
 		return $this->success($this->model->books);
+	}
+
+	/**
+	 * @OA\Put(
+	 *     path="/users/me/sale-confirmation/{bookId}",
+	 *     summary="Responde se é o comprador do livro",
+	 *     operationId="UserSaleConfirmation",
+	 *     tags={"users"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Parameter(
+	 *         name="bookId",
+	 *         in="path",
+	 *         description="ID do livro",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *           type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+	public function saleConfirmation(Request $request, $bookId)
+	{
+		$this->validate($request, [
+			'answer' => 'required|boolean'
+		]);
+		$book = Book::findOrFail($bookId);
+
+		$sale = $this->model->isBuyer()->where('book_id', $bookId)
+			->whereNull('accepted')->firstOrFail();
+
+		$sale->update([
+			'accepted' => $request->post('answer'),
+			'answered_at' => Carbon::now()
+		]);
+
+		if ($request->post('answer')) {
+			$book->update(['status_id' => Status::SOLD]);
+		}
+
+		return $this->noContent();
 	}
 }

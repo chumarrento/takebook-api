@@ -4,6 +4,7 @@ namespace App\Entities\User;
 
 use App\Entities\AccessLog;
 use App\Entities\Book\Book;
+use App\Entities\Book\HasBuyer;
 use App\Entities\Chat\Message;
 use App\Entities\Chat\Room;
 use App\Entities\FCMClient;
@@ -51,7 +52,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		'is_admin',
 		'avatar'
 	];
-	protected $appends = ['full_name', 'avatar_url', 'address', 'total_sales'];
+	protected $appends = ['full_name', 'avatar_url', 'address', 'total_sales', 'sales_to_confirmed'];
 
 	public function getAvatarUrlAttribute()
 	{
@@ -170,6 +171,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		return $this->hasOne(Address::class, 'user_id', 'id');
 	}
 
+	public function isBuyer()
+	{
+		return $this->hasMany(HasBuyer::class, 'buyer_id', 'id');
+	}
+
 	public function getAddressAttribute()
 	{
 		return $this->address()->getResults();
@@ -177,7 +183,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 	public function getTotalSalesAttribute()
 	{
-		return $this->books()->where('status_id', '=', Status::ANALYZE)->count();
+		return $this->books()->where('status_id', '=', Status::SOLD)->count();
 	}
 
 	public function getFullNameAttribute()
@@ -194,5 +200,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 			return false;
 		}
 		return $room;
+	}
+
+	public function getSalesToConfirmedAttribute()
+	{
+		$sales = $this->isBuyer()->with('book')->whereNull('accepted')->get();
+
+		if ($sales->isNotEmpty()) {
+			return $sales->map(function ($sale) {
+				return $sale->book;
+			});
+		}
+		return $sales;
 	}
 }
