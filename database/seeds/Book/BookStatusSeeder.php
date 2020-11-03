@@ -25,6 +25,9 @@ class BookStatusSeeder extends Seeder
             ],
 			[
 				'name' => 'Vendido'
+			],
+			[
+				'name' => 'Aguardando confirmação'
 			]
         ];
         DB::statement('SET foreign_key_checks=0');

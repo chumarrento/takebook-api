@@ -25,7 +25,8 @@ class Book extends Model
 		'approved_at',
 		'condition_id',
 		'status_id',
-		'user_id'
+		'user_id',
+		'solded_at'
 	];
 
 	protected $appends = ['categories', 'count_likes', 'owner', 'covers_url', 'viewer_liked'];

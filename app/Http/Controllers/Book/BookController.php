@@ -478,14 +478,21 @@ class BookController extends ApiController
 		]);
 		$book = $this->model->findOrFail($id);
 
+		$status = Status::SOLD;
+
 		if ($request->has('user_id')) {
 			HasBuyer::create([
 				'book_id' => $book->id,
 				'buyer_id' => $request->post('user_id')
 			]);
-		} else {
-			$book->update(['status' => Status::SOLD]);
+			$status = Status::WAITING_CONFIRMATION;
 		}
+
+		$book->update([
+			'status_id' => $status,
+			'solded_at' => $status === 4 ? Carbon::now() : null
+		]);
+
 		return $this->noContent();
 	}
 

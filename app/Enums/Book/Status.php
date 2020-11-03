@@ -11,5 +11,6 @@ abstract class Status extends Enum
     const ANALYZE = 1;
     const APPROVED = 2;
     const DISAPPROVED = 3;
-    const SOLD = 4;
+	const SOLD = 4;
+	const WAITING_CONFIRMATION = 5;
 }

@@ -452,7 +452,10 @@ class MeController extends ApiController
 		]);
 
 		if ($request->post('answer')) {
-			$book->update(['status_id' => Status::SOLD]);
+			$book->update([
+				'status_id' => Status::SOLD,
+				'solded_at' => Carbon::now()
+			]);
 		}
 
 		return $this->noContent();
