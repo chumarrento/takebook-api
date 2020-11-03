@@ -52,7 +52,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		'is_admin',
 		'avatar'
 	];
-	protected $appends = ['full_name', 'avatar_url', 'address', 'total_sales', 'sales_to_confirmed'];
+	protected $appends = ['full_name', 'avatar_url', 'address', 'total_sales'];
 
 	public function getAvatarUrlAttribute()
 	{
@@ -202,7 +202,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		return $room;
 	}
 
-	public function getSalesToConfirmedAttribute()
+	public function getSalesToConfirmed()
 	{
 		$sales = $this->isBuyer()->with('book')->whereNull('accepted')->get();
 
