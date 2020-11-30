@@ -30,6 +30,7 @@ $router->get('users/me/books', 'User\\MeController@books');
 $router->get('users/me/likes', 'User\\MeController@getLikedBooks');
 $router->post('users/me/likes/{bookId}', 'User\\MeController@likeBook');
 $router->post('users/me/reports/{reportedId}', 'User\\MeController@report');
+$router->put('users/me/sale-confirmation/{bookId}', 'User\\MeController@saleConfirmation');
 
 $router->get('users', 'User\\UserController@getUsers');
 $router->post('users', 'User\\UserController@postUser');
@@ -58,6 +59,7 @@ $router->post('books', 'Book\\BookController@postBook');
 $router->get('books/{id}', 'Book\\BookController@getBook');
 $router->put('books/{id}', 'Book\\BookController@putBook');
 $router->put('books/{id}/status', 'Book\\BookController@changeStatus');
+$router->put('books/{id}/owner/status', 'Book\\BookController@ownerChangeStatus');
 $router->delete('books/{id}', 'Book\\BookController@deleteBook');
 
 $router->post('books/{bookId}/image/{imageId}', 'Book\\ImageController@updateImage');

@@ -19,7 +19,8 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->timestamp('approved_at')->nullable();
+			$table->timestamp('approved_at')->nullable();
+			$table->timestamp('solded_at')->nullable();
             $table->bigInteger('condition_id')->unsigned();
             $table->bigInteger('status_id')->unsigned()->default(1);
             $table->bigInteger('user_id')->unsigned();

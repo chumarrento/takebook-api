@@ -25,7 +25,8 @@ class Book extends Model
 		'approved_at',
 		'condition_id',
 		'status_id',
-		'user_id'
+		'user_id',
+		'solded_at'
 	];
 
 	protected $appends = ['categories', 'count_likes', 'owner', 'covers_url', 'viewer_liked'];
@@ -88,6 +89,11 @@ class Book extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'user_id');
+	}
+
+	public function buyer()
+	{
+		return $this->hasOne(HasBuyer::class, 'book_id', 'id');
 	}
 
 	public function getCoversUrlAttribute()

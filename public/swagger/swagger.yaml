@@ -434,6 +434,36 @@ paths:
       security:
         -
           apiToken: []
+  '/books/{id}/owner/status':
+    put:
+      tags:
+        - books
+      summary: 'Dono do anuncio altera o status de um livro'
+      operationId: OwnerPutStatusBooks
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID do livro'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                user_id:
+                  type: string
+              type: object
+              example:
+                user_id: userId
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
   /books/conditions:
     get:
       tags:
@@ -1020,6 +1050,26 @@ paths:
           in: query
           description: 'ID do status do livro'
           required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ...
+      security:
+        -
+          apiToken: []
+  '/users/me/sale-confirmation/{bookId}':
+    put:
+      tags:
+        - users
+      summary: 'Responde se é o comprador do livro'
+      operationId: UserSaleConfirmation
+      parameters:
+        -
+          name: bookId
+          in: path
+          description: 'ID do livro'
+          required: true
           schema:
             type: integer
       responses:

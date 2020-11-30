@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Book;
 
 
 use App\Entities\Book\Book;
+use App\Entities\Book\HasBuyer;
 use App\Entities\Category\Category;
 use App\Enums\Book\Status;
 use App\FieldManagers\Book\BookFieldManager;
@@ -435,6 +436,65 @@ class BookController extends ApiController
         $request->merge(['approved_at' => Carbon::now()]);
         return parent::update($request, $id);
     }
+
+	/**
+	 * @OA\Put(
+	 *     path="/books/{id}/owner/status",
+	 *     summary="Dono do anuncio altera o status de um livro",
+	 *     operationId="OwnerPutStatusBooks",
+	 *     tags={"books"},
+	 *     security={{"apiToken":{}}},
+	 *     @OA\Parameter(
+	 *         name="id",
+	 *         in="path",
+	 *         description="ID do livro",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *           type="integer"
+	 *         )
+	 *     ),
+	 *     @OA\RequestBody(
+	 *         @OA\MediaType(
+	 *             mediaType="application/json",
+	 *             @OA\Schema(
+	 *                 @OA\Property(
+	 *                     property="user_id",
+	 *                     type="string"
+	 *                 ),
+	 *                 example={"user_id": "userId"}
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response=200,
+	 *         description="...",
+	 *     ),
+	 *  )
+	 */
+	public function ownerChangeStatus(Request $request, int $id)
+	{
+		$this->validate($request, [
+			'user_id' => 'nullable|exists:users,id'
+		]);
+		$book = $this->model->findOrFail($id);
+
+		$status = Status::SOLD;
+
+		if ($request->has('user_id')) {
+			HasBuyer::create([
+				'book_id' => $book->id,
+				'buyer_id' => $request->post('user_id')
+			]);
+			$status = Status::WAITING_CONFIRMATION;
+		}
+
+		$book->update([
+			'status_id' => $status,
+			'solded_at' => $status === 4 ? Carbon::now() : null
+		]);
+
+		return $this->noContent();
+	}
 
     /**
      * @OA\Delete(
