@@ -114,6 +114,7 @@ class ChatController extends Controller
             'message' => 'required|string'
         ]);
         $user = Auth::user();
+
 		$targetUser = User::find($request->input('target_id'));
         $room = $user->hasRoomWith($targetUser);
 		$createRoom = false;
@@ -123,10 +124,11 @@ class ChatController extends Controller
 			$createRoom = true;
 			$room = $user->hasRoomWith($targetUser);
         }
-        $message = $request->all();
-        $message['room_id'] = $room->id;
-        $message['user_id'] = $user->id;
-        Message::create($message);
+
+		$message = $request->all();
+		$message['room_id'] = $room->id;
+		$message['user_id'] = $user->id;
+		Message::create($message);
 		$room = $user->hasRoomWith($targetUser);
 
 		if ($createRoom) {

@@ -193,8 +193,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 	public function hasRoomWith(User $user)
 	{
-		$room = Room::where('buyer_id', $user->id)
-			->orWhere('advertiser_id', $user->id)->first();
+		$room = Room::where([
+				['buyer_id', $user->id],
+				['advertiser_id', $this->id]
+		])->orWhere([
+			['advertiser_id', $user->id],
+			['buyer_id', $this->id]
+		])->first();
 
 		if (!$room) {
 			return false;
